@@ -30,8 +30,12 @@ export default function AppRouter() {
           {guestAdminRoutes.map(({ path, element }) => (
             <Route key={path} path={path} element={element} />
           ))}
-          {adminRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
+          {adminRoutes.map(({ path, element, children }) => (
+            <Route key={path} path={path} element={element}>
+              {children?.map((child) => (
+                <Route key={child.path} path={child.path} element={child.element} />
+              ))}
+            </Route>
           ))}
         </Route>
 

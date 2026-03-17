@@ -20,7 +20,9 @@ adminApi.interceptors.response.use(
     // initial /sys/auth/me/ session check — a 401 there just means the
     // admin isn't logged in yet, and the context handles that gracefully).
     const silent = error.config?._silent;
-    if (!silent && [401, 403].includes(error.response?.status)) {
+    const isAuthRequest = error.config?.url?.includes("sys/auth/");
+
+    if (!silent && !isAuthRequest && [401, 403].includes(error.response?.status)) {
       window.location.href = "/admin/login";
     }
     return Promise.reject(error);

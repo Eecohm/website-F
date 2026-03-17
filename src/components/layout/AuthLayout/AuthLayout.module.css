@@ -87,15 +87,15 @@
     }
 
     .formPanel {
-        flex: 0 0 50%;
-        max-width: 50%;
+        flex: 0 0 55%;
+        max-width: 55%;
     }
 }
 
 @media (min-width: 1024px) {
     .formPanel {
-        flex: 0 0 45%;
-        max-width: 45%;
+        flex: 0 0 55%;
+        max-width: 55%;
     }
 }
 

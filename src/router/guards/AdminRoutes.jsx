@@ -10,7 +10,7 @@ export default function AdminRoute({ children }) {
     tryRestoreSession();
   }, []);
 
-  if (!initialized || loading) return null;
+  if (!initialized) return null;
 
   if (authStep !== "authed") {
     return <Navigate to="/admin/login" state={{ from: location }} replace />;

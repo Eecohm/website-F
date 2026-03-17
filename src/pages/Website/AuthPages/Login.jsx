@@ -25,7 +25,6 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [serverError, setServerError] = useState('');
@@ -53,28 +52,24 @@ export default function Login() {
 
     setLoading(true);
     try {
-      if (isAdmin) {
-        // Redirect to admin login page for the full admin flow (OTP, etc.)
-        navigate('/admin/login');
-        return;
-      }
-
       await login(email, password);
       addToast({ type: 'success', message: 'Welcome back!' });
       navigate('/app/dashboard');
     } catch (err) {
-      const msg =
-        err.response?.data?.message ||
-        err.response?.data?.detail ||
-        'Login failed. Please check your credentials.';
+      let msg = 'An unexpected error occurred during login.';
 
-      // Show field-level error if it's a credentials issue
-      if (err.response?.status === 401 || err.response?.status === 400) {
+      if (!err.response) {
+        msg = 'Network error: Unable to connect to the server. Please check your internet connection.';
+      } else if (err.response.status === 401 || err.response.status === 400) {
+        msg = err.response.data?.message || err.response.data?.detail || 'Invalid credentials. Please try again.';
         setServerError(msg);
+        return; // Early return as we've set the specific server error
       } else {
-        // Unexpected error → toast
-        addToast({ type: 'error', message: msg });
+        msg = err.response.data?.message || err.response.data?.detail || 'Server error. Please try again later.';
       }
+
+      // Unexpected error or server error → toast
+      addToast({ type: 'error', message: msg });
     } finally {
       setLoading(false);
     }
@@ -117,21 +112,6 @@ export default function Login() {
           error={errors.password}
         />
 
-        <label className={styles.adminToggle}>
-          <input
-            type="checkbox"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
-          />
-          Login as System Admin
-        </label>
-
-        {isAdmin && (
-          <p className={styles.adminHint}>
-            You'll be redirected to the admin login flow which requires OTP verification.
-          </p>
-        )}
-
         <Button
           type="submit"
           variant="primary"
@@ -139,7 +119,20 @@ export default function Login() {
           fullWidth
           loading={loading}
         >
-          {isAdmin ? 'Continue to Admin Login' : 'Login'}
+          Login
+        </Button>
+
+        <div className={styles.divider}>
+          <span className={styles.dividerText}>OR</span>
+        </div>
+
+        <Button
+          variant="ghost"
+          fullWidth
+          onClick={() => navigate('/admin/login')}
+          className={styles.adminBtn}
+        >
+          Login as System Admin
         </Button>
 
         <div className={styles.links}>

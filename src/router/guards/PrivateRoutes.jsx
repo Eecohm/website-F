@@ -10,7 +10,7 @@ export default function PrivateRoute({ children }) {
     tryRestoreSession();
   }, []);
 
-  if (!initialized || loading) return null;
+  if (!initialized) return null;
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;

@@ -1,0 +1,97 @@
+/* AdminDashboard.module.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.header {
+    margin-bottom: var(--space-2);
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-0-5);
+}
+
+.subtitle {
+    color: var(--color-text-secondary);
+    font-size: var(--font-base);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-3);
+}
+
+.card {
+    background: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    transition: transform var(--anim-base) var(--ease-out), shadow var(--anim-base) var(--ease-out);
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--purple-200);
+}
+
+.cardIcon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-xl);
+}
+
+.card Purple {
+    background-color: var(--purple-50);
+    color: var(--purple-600);
+}
+
+.cardNavy {
+    background-color: var(--navy-50);
+    color: var(--navy-600);
+}
+
+.cardTeal {
+    background-color: var(--teal-50);
+    color: var(--teal-600);
+}
+
+.cardTitle {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.cardDesc {
+    font-size: var(--font-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--leading-normal);
+}
+
+.cardAction {
+    margin-top: auto;
+    font-size: var(--font-xs);
+    font-weight: var(--weight-bold);
+    color: var(--purple-700);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-0-5);
+}

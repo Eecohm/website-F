@@ -1,0 +1,104 @@
+/* AdminSidebar.module.css */
+
+.sidebar {
+    width: 260px;
+    height: 100vh;
+    background-color: var(--purple-900);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: var(--z-sticky);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brand {
+    padding: var(--space-3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brandName {
+    font-size: var(--font-lg);
+    font-weight: var(--weight-bold);
+    color: var(--white);
+    letter-spacing: -0.02em;
+}
+
+.brandTag {
+    font-size: var(--font-xs);
+    color: var(--purple-300);
+    text-transform: uppercase;
+    font-weight: var(--weight-semibold);
+    display: block;
+    margin-top: var(--space-0-5);
+}
+
+.nav {
+    flex: 1;
+    padding: var(--space-2) 0;
+    overflow-y: auto;
+}
+
+.navGroup {
+    margin-bottom: var(--space-3);
+}
+
+.groupLabel {
+    padding: 0 var(--space-3);
+    font-size: var(--font-xs);
+    font-weight: var(--weight-bold);
+    color: var(--purple-400);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--space-1);
+}
+
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    padding: var(--space-1-5) var(--space-3);
+    color: var(--purple-100);
+    text-decoration: none;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-medium);
+    transition: all var(--anim-fast);
+}
+
+.navItem:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+}
+
+.navItemActive {
+    background-color: var(--purple-700);
+    color: var(--white);
+}
+
+.footer {
+    padding: var(--space-2);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.logoutBtn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    padding: var(--space-1-5) var(--space-2);
+    color: var(--red-400);
+    background: none;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: var(--font-sm);
+    font-weight: var(--weight-medium);
+    transition: background var(--anim-fast);
+}
+
+.logoutBtn:hover {
+    background-color: var(--red-50);
+    color: var(--red-600);
+}

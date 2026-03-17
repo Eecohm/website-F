@@ -24,32 +24,37 @@
     gap: var(--space-2-5);
 }
 
-/* ── Admin toggle ───────────────────────────────────────────── */
-.adminToggle {
+/* ── Admin Login Navigation ─────────────────────────────────── */
+.divider {
     display: flex;
     align-items: center;
     gap: var(--space-1);
-    font-size: var(--font-sm);
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    user-select: none;
+    margin: var(--space-1) 0;
 }
 
-.adminToggle input[type='checkbox'] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--color-primary);
-    cursor: pointer;
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background-color: var(--color-border);
 }
 
-.adminHint {
+.dividerText {
     font-size: var(--font-xs);
-    color: var(--purple-600);
-    background-color: var(--purple-50);
-    border: 1px solid var(--purple-100);
-    border-radius: var(--radius-sm);
-    padding: var(--space-0-5) var(--space-1);
-    margin-top: calc(-1 * var(--space-1));
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.adminBtn {
+    color: var(--purple-700) !important;
+}
+
+.adminBtn:hover {
+    background-color: var(--purple-50) !important;
+    color: var(--purple-800) !important;
 }
 
 /* ── Secondary links row ────────────────────────────────────── */
@@ -76,28 +81,6 @@
     outline: none;
     box-shadow: var(--shadow-focus);
     border-radius: var(--radius-sm);
-}
-
-/* ── Divider ────────────────────────────────────────────────── */
-.divider {
-    display: flex;
-    align-items: center;
-    gap: var(--space-1-5);
-    margin: var(--space-1) 0;
-}
-
-.divider::before,
-.divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background-color: var(--color-border);
-}
-
-.dividerText {
-    font-size: var(--font-xs);
-    color: var(--color-text-muted);
-    white-space: nowrap;
 }
 
 /* ── Server error banner ────────────────────────────────────── */

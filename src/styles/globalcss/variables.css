@@ -212,15 +212,10 @@
     --color-role-parent-border: var(--green-100);
     --color-role-parent-text: var(--green-700);
 
-
     /* ==========================================================
      3. SPACING
-     Base unit: 8px.
-     --space-1 = 8px  --space-2 = 16px  --space-3 = 24px
-     Half steps available for tight gaps (icons, badges).
      ========================================================== */
 
-    --space-0: 0px;
     --space-px: 1px;
     --space-0-5: 4px;
     /* tight — icon gaps, inline padding  */

@@ -1,0 +1,51 @@
+/* AdminTopBar.module.css */
+
+.topbar {
+    height: var(--space-7);
+    /* 56px */
+    background-color: var(--color-bg-topbar);
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 var(--space-4);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky - 1);
+}
+
+.userInfo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1-5);
+}
+
+.userLabel {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.userName {
+    font-size: var(--font-sm);
+    font-weight: var(--weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.userRole {
+    font-size: var(--font-xs);
+    color: var(--purple-600);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background-color: var(--purple-100);
+    color: var(--purple-700);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--weight-bold);
+    font-size: var(--font-xs);
+}

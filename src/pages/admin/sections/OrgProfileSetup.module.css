@@ -1,0 +1,301 @@
+.container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.wizardCard {
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    box-shadow: none;
+    margin: 0;
+}
+
+.wizardHeader {
+    background: linear-gradient(135deg, var(--navy-900), var(--navy-700));
+    padding: var(--space-4) var(--space-6);
+    color: var(--white);
+    text-align: center;
+}
+
+.title {
+    font-size: var(--font-2xl);
+    font-weight: 800;
+    margin-bottom: var(--space-1);
+    letter-spacing: -0.01em;
+}
+
+.subtitle {
+    opacity: 0.8;
+    font-size: 13px;
+    margin-top: 2px;
+}
+
+/* Progress Bar */
+.progressContainer {
+    display: flex;
+    justify-content: center;
+    gap: 140px;
+    padding: var(--space-1-5) var(--space-10);
+    background: transparent;
+    border-bottom: 1px solid var(--color-border);
+    position: relative;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.progressLine {
+    position: absolute;
+    top: 50%;
+    left: 42%;
+    right: 42%;
+    height: 2px;
+    background: var(--color-border-strong);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.progressFill {
+    position: absolute;
+    top: 50%;
+    left: 42%;
+    height: 2px;
+    background: var(--brand-purple, #6366f1);
+    transform: translateY(-50%);
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 2;
+}
+
+.stepNode {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.stepCircle {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--color-bg-card);
+    border: 1.5px solid var(--color-border-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text-muted);
+    transition: all 0.3s ease;
+}
+
+.stepActive .stepCircle {
+    border-color: var(--brand-purple, #6366f1);
+    background: var(--brand-purple, #6366f1);
+    color: var(--white);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.2);
+}
+
+.stepCompleted .stepCircle {
+    border-color: var(--color-success);
+    background: var(--color-success);
+    color: var(--white);
+}
+
+.stepLabel {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+}
+
+.stepActive .stepLabel {
+    color: var(--brand-purple, #6366f1);
+}
+
+/* Form Area */
+.formContent {
+    padding: var(--space-3) var(--space-10);
+    background: transparent;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.stepFade {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.99);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-1-5) var(--space-6);
+}
+
+.fullWidth {
+    grid-column: span 3;
+}
+
+.twoThirds {
+    grid-column: span 2;
+}
+
+.sectionTitle {
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--brand-purple, #6366f1);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.sectionTitle::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+    margin-left: 10px;
+}
+
+/* Select Styling */
+.select {
+    width: 100%;
+    padding: 0.625rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-subtle);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    outline: none;
+    transition: all 0.2s ease;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236366f1' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7' /%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1rem;
+    cursor: pointer;
+}
+
+.select:hover {
+    border-color: var(--brand-purple, #6366f1);
+}
+
+.select:focus {
+    border-color: var(--brand-purple, #6366f1);
+    box-shadow: 0 0 0 1px var(--brand-purple, #6366f1);
+}
+
+/* File Upload Previews */
+.uploadGroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.fileInputWrapper {
+    position: relative;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: var(--space-2);
+    text-align: center;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    background: var(--color-bg-subtle);
+}
+
+.fileInputWrapper:hover {
+    border-color: var(--brand-purple, #6366f1);
+    background: var(--color-bg-hover);
+}
+
+.fileInput {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.previewImage {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    margin: 0 auto var(--space-1);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-card);
+}
+
+.previewCover {
+    width: 100%;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-1);
+    background: var(--color-bg-card);
+}
+
+/* Footer / Actions */
+.wizardFooter {
+    padding: var(--space-2) var(--space-10);
+    background: transparent;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1150px;
+    margin: 0 auto;
+}
+
+.btnGroup {
+    display: flex;
+    gap: var(--space-3);
+}
+
+@media (max-width: 1024px) {
+    .formGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .fullWidth,
+    .twoThirds {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .formGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .fullWidth,
+    .twoThirds {
+        grid-column: span 1;
+    }
+
+    .progressContainer {
+        padding: var(--space-4);
+    }
+
+    .stepLabel {
+        display: none;
+    }
+
+    .formContent {
+        padding: var(--space-4);
+    }
+}

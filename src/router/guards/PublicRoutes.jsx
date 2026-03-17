@@ -18,7 +18,7 @@ export function UserGuestRoute({ children }) {
     tryRestoreSession();
   }, []);
 
-  if (!initialized || loading) return null;
+  if (!initialized) return null;
 
   if (user) {
     return <Navigate to="/app/dashboard" replace />;
@@ -42,7 +42,7 @@ export function AdminGuestRoute({ children }) {
     tryRestoreSession();
   }, []);
 
-  if (!initialized || loading) return null;
+  if (!initialized) return null;
 
   if (authStep === "authed") {
     return <Navigate to="/app/admin/dashboard" replace />;

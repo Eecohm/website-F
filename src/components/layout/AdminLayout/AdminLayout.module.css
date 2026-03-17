@@ -1,0 +1,32 @@
+/* AdminLayout.module.css */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color-bg-page);
+}
+
+.main {
+    flex: 1;
+    margin-left: 260px;
+    /* Width of sidebar */
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    /* Prevent flex overflow */
+}
+
+.content {
+    flex: 1;
+    width: 100%;
+}
+
+@media (max-width: 1024px) {
+    .main {
+        margin-left: 0;
+    }
+
+    .sidebarHidden {
+        display: none;
+    }
+}
