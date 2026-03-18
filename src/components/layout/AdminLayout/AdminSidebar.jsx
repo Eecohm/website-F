@@ -8,6 +8,7 @@ export function AdminSidebar() {
     const navLinks = [
         { name: 'Dashboard', path: '/app/admin/dashboard' },
         { name: 'Org Profile', path: '/app/admin/profile' },
+        { name: 'Sub-Organizations', path: '/app/admin/sub-orgs' },
         { name: 'User Approvals', path: '/app/admin/approvals' },
         { name: 'System Logs', path: '/app/admin/logs' },
     ];
