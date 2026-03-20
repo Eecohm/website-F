@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useCallback } from "react";
 import adminApi from "@/services/axios/adminApi";
 
 const AdminAuthContext = createContext(null);
@@ -23,21 +23,22 @@ export function AdminAuthProvider({ children }) {
      * Attempt to restore an existing admin session.
      * Call from route guards when loading admin routes.
      */
-    async function tryRestoreSession() {
+    const tryRestoreSession = useCallback(async () => {
         if (initialized) return;
         setLoading(true);
         try {
             const res = await adminApi.get("/sys/auth/me/", { _silent: true });
             setAdmin(res.data);
             setAuthStep("authed");
+            setInitialized(true);
         } catch {
             setAdmin(null);
             setAuthStep("idle");
+            setInitialized(true);
         } finally {
             setLoading(false);
-            setInitialized(true);
         }
-    }
+    }, [initialized]);
 
     async function submitCredentials(email, password) {
         setError(null);

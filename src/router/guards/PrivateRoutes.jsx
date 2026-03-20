@@ -1,20 +1,43 @@
-import { useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import AppLayout from "@/components/layout/AppLayout/AppLayout";
 
-export default function PrivateRoute({ children }) {
-  const { user, loading, initialized, tryRestoreSession } = useAuth();
-  const location = useLocation();
+function FullPageSpinner() {
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', flexDirection: 'column' }}>
+      <div style={{ width: '40px', height: '40px', border: '3px solid var(--border)', borderTop: '3px solid var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Verifying session...</p>
+    </div>
+  );
+}
 
-  useEffect(() => {
-    tryRestoreSession();
-  }, []);
+export function PrivateRoute({ children }) {
+  const { isAuthenticated, user, loading } = useAuth();
 
-  if (!initialized) return null;
+  if (loading) return <FullPageSpinner />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
-  if (!user) {
-    return <Navigate to="/login" state={{ from: location }} replace />;
-  }
+  const { profile_complete, membership_status } = user ?? {};
+
+  // Zone B checks
+  if (!profile_complete) return <Navigate to="/app/profile/setup" replace />;
+  if (membership_status === 'pending') return <Navigate to="/app/profile/setup" replace />;
+  if (membership_status === 'waiting_approval') return <Navigate to="/app/profile/setup" replace />;
+  if (membership_status === 'rejected')  return <Navigate to="/app/profile/setup"  replace />;
+  if (membership_status === 'suspended') return <Navigate to="/setup/status" replace />;
+
+  // Zone C - Full Access
+  return <AppLayout>{children}</AppLayout>;
+}
+
+export function SetupRoute({ children }) {
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) return <FullPageSpinner />;
+  if (!isAuthenticated) return <Navigate to="/login" replace />;
 
   return children;
 }
+
+// Preserve default export for backward compatibility in routing files, though we will update them next.
+export default PrivateRoute;

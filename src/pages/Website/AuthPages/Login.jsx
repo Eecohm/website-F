@@ -1,93 +1,86 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
+import publicApi from '@/services/axios/publicApi';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 import { Button } from '@/components/ui/Button';
-import { TextInput } from '@/components/ui/Input';
-import { PasswordInput } from '@/components/ui/Input';
+import { TextInput, PasswordInput } from '@/components/ui/Input';
 import { useToast } from '@/components/ui/Toast';
 import { useAuth } from '@/context/AuthContext';
 import styles from './Login.module.css';
 
-/**
- * LoginPage — handles both user and admin login.
- *
- * When "Login as System Admin" is checked, submits to the admin
- * endpoint via AdminAuthContext. Otherwise uses AuthContext.
- *
- * NOTE: This page is rendered inside <AuthProvider> for regular login.
- *       For admin login, the user can navigate to /admin/login instead;
- *       the checkbox here is a convenience shortcut.
- */
 export default function Login() {
   const navigate = useNavigate();
   const { addToast } = useToast();
-  const { login } = useAuth();
+  const { isAuthenticated, user, loading, signIn } = useAuth();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail]       = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState({});
-  const [serverError, setServerError] = useState('');
+  const [loadingState, setLoadingState] = useState(false);
+  const [errors, setErrors]             = useState({});
+  const [serverError, setServerError]   = useState('');
 
   function validate() {
     const errs = {};
-    if (!email.trim()) {
-      errs.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errs.email = 'Enter a valid email address';
-    }
-    if (!password) {
-      errs.password = 'Password is required';
-    }
+    if (!email.trim()) errs.email = 'Email is required';
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errs.email = 'Enter a valid email address';
+    if (!password) errs.password = 'Password is required';
     return errs;
   }
 
   async function handleSubmit(e) {
     e.preventDefault();
     setServerError('');
-
     const errs = validate();
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
 
-    setLoading(true);
+    setLoadingState(true);
     try {
-      await login(email, password);
-      addToast({ type: 'success', message: 'Welcome back!' });
-      navigate('/app/dashboard');
+      const res = await publicApi.post('/auth/login/', { email, password });
+      const { access_token, profile_complete, membership_status, role_type } = res.data;
+      signIn(access_token, { profile_complete, membership_status, role_type });
+      // Navigation handled by the if-block below on next render
     } catch (err) {
-      let msg = 'An unexpected error occurred during login.';
-
       if (!err.response) {
-        msg = 'Network error: Unable to connect to the server. Please check your internet connection.';
+        addToast({ type: 'error', message: 'Network error. Please check your connection.' });
       } else if (err.response.status === 401 || err.response.status === 400) {
-        msg = err.response.data?.message || err.response.data?.detail || 'Invalid credentials. Please try again.';
-        setServerError(msg);
-        return; // Early return as we've set the specific server error
+        setServerError(err.response.data?.detail || err.response.data?.message || 'Invalid credentials. Please try again.');
       } else {
-        msg = err.response.data?.message || err.response.data?.detail || 'Server error. Please try again later.';
+        addToast({ type: 'error', message: err.response.data?.detail || 'Server error. Please try again later.' });
       }
-
-      // Unexpected error or server error → toast
-      addToast({ type: 'error', message: msg });
     } finally {
-      setLoading(false);
+      setLoadingState(false);
     }
+  }
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', flexDirection: 'column' }}>
+        <div style={{ width: '40px', height: '40px', border: '3px solid var(--border)', borderTop: '3px solid var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+        <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Restoring session...</p>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    const s = user?.membership_status;
+    if (!user?.profile_complete)  return <Navigate to="/app/profile/setup" replace />;
+    if (s === 'pending')          return <Navigate to="/app/profile/setup" replace />;
+    if (s === 'waiting_approval') return <Navigate to="/setup/status"      replace />;
+    if (s === 'rejected')         return <Navigate to="/setup/status"      replace />;
+    if (s === 'suspended')        return <Navigate to="/setup/status"      replace />;
+    return <Navigate to="/app/dashboard" replace />;
   }
 
   return (
     <AuthLayout>
       <div className={styles.header}>
         <h2 className={styles.title}>Welcome back</h2>
-        <p className={styles.subtitle}>
-          Sign in to your account to continue
-        </p>
+        <p className={styles.subtitle}>Sign in to your account to continue</p>
       </div>
 
       {serverError && (
-        <p className={styles.serverError} role="alert">
-          {serverError}
-        </p>
+        <p className={styles.serverError} role="alert">{serverError}</p>
       )}
 
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
@@ -112,13 +105,7 @@ export default function Login() {
           error={errors.password}
         />
 
-        <Button
-          type="submit"
-          variant="primary"
-          size="lg"
-          fullWidth
-          loading={loading}
-        >
+        <Button type="submit" variant="primary" size="lg" fullWidth loading={loadingState}>
           Login
         </Button>
 
@@ -136,12 +123,8 @@ export default function Login() {
         </Button>
 
         <div className={styles.links}>
-          <Link to="/forgot-password" className={styles.link}>
-            Forgot password?
-          </Link>
-          <Link to="/register" className={styles.link}>
-            Create an account
-          </Link>
+          <Link to="/forgot-password" className={styles.link}>Forgot password?</Link>
+          <Link to="/register" className={styles.link}>Create an account</Link>
         </div>
       </form>
     </AuthLayout>

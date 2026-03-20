@@ -1,0 +1,66 @@
+/* Shared field primitives — imported per step, not globally */
+.sf-group { margin-bottom: 20px; }
+.sf-group:last-child { margin-bottom: 0; }
+
+.sf-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--w-label);
+  margin-bottom: 6px;
+  letter-spacing: 0.01em;
+}
+.sf-optional {
+  font-weight: 400;
+  color: var(--w-text-muted);
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+.sf-input,
+.sf-select,
+.sf-textarea {
+  width: 100%;
+  padding: 10px 13px;
+  border: 1.5px solid var(--w-border);
+  border-radius: var(--w-radius-md);
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--w-text);
+  background: var(--w-surface);
+  transition: var(--w-transition);
+  outline: none;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.sf-input:focus,
+.sf-select:focus,
+.sf-textarea:focus {
+  border-color: var(--w-border-focus);
+  box-shadow: var(--w-focus-ring);
+}
+.sf-input::placeholder,
+.sf-textarea::placeholder { color: var(--w-text-muted); }
+.sf-input.has-error,
+.sf-select.has-error { border-color: var(--w-error); }
+
+/* Select arrow */
+.sf-select-wrap { position: relative; }
+.sf-select-wrap::after {
+  content: '';
+  position: absolute;
+  right: 12px; top: 50%;
+  transform: translateY(-50%);
+  width: 0; height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--w-text-muted);
+  pointer-events: none;
+}
+
+.sf-error { font-size: 12px; color: var(--w-error); margin-top: 4px; display: flex; align-items: center; gap: 4px; }
+
+/* Two-column grid */
+.sf-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 480px) { .sf-grid-2 { grid-template-columns: 1fr; } }

@@ -1,7 +1,10 @@
+// publicRoutes.jsx guard
+
 import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/context/AuthContext";
 import { useAdminAuth } from "@/context/AdminAuthContext";
+import { publicRoutes } from "../routes/PublicRoutes";
 
 /**
  * UserGuestRoute
@@ -12,11 +15,7 @@ import { useAdminAuth } from "@/context/AdminAuthContext";
  * If the user is already logged in, redirect them to the user dashboard.
  */
 export function UserGuestRoute({ children }) {
-  const { user, loading, initialized, tryRestoreSession } = useAuth();
-
-  useEffect(() => {
-    tryRestoreSession();
-  }, []);
+  const { user, loading, initialized } = useAuth();
 
   if (!initialized) return null;
 
@@ -40,8 +39,10 @@ export function AdminGuestRoute({ children }) {
 
   useEffect(() => {
     tryRestoreSession();
-  }, []);
+  }, [tryRestoreSession]);
 
+  // Fix: Removed `|| loading` from the guard to prevent the AdminLogin page
+  // from instantly unmounting and flashing blank when credentials are submitted.
   if (!initialized) return null;
 
   if (authStep === "authed") {

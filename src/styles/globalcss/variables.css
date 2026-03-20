@@ -348,4 +348,19 @@
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
+    /* ==========================================================
+     10. MODULE ALIASES (Wizard & Dashboard Compatibility)
+     ========================================================== */
+    --primary: var(--color-primary);
+    --primary-dark: var(--color-primary-hover);
+    --primary-rgb: 30, 60, 120;
+    --surface: var(--color-bg-card);
+    --bg: var(--color-bg-page);
+    --bg-default: var(--color-bg-page);
+    --border: var(--color-border-strong);
+    --text-primary: var(--color-text-primary);
+    --text-secondary: var(--color-text-secondary);
+    --error: var(--color-danger);
+    --warning: var(--color-warning);
+    --info: var(--color-secondary);
 }

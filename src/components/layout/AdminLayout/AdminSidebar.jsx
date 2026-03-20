@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useAdminAuth } from '@/context/AdminAuthContext';
 import styles from './AdminSidebar.module.css';
 
-export function AdminSidebar() {
+export function AdminSidebar({ isOpen, onClose }) {
     const { adminLogout } = useAdminAuth();
 
     const navLinks = [
@@ -14,9 +14,11 @@ export function AdminSidebar() {
     ];
 
     return (
-        <aside className={styles.sidebar}>
-            <div className={styles.brand}>
-                <div className={styles.brandName}>EduCore</div>
+        <>
+            {isOpen && <div className={styles.overlay} onClick={onClose} />}
+            <aside className={`${styles.sidebar} ${isOpen ? styles.sidebarOpen : ''}`}>
+                <div className={styles.brand}>
+                    <div className={styles.brandName}>EduCore</div>
                 <span className={styles.brandTag}>System Admin</span>
             </div>
 
@@ -43,5 +45,6 @@ export function AdminSidebar() {
                 </button>
             </div>
         </aside>
+        </>
     );
 }

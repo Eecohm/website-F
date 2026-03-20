@@ -1,5 +1,7 @@
+// App.jsx
 import AppRouter from "@/router/index";
 import { ToastProvider } from "@/components/ui/Toast";
+
 
 const App = () => {
   return (

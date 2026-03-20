@@ -8,8 +8,11 @@ export default function AdminRoute({ children }) {
 
   useEffect(() => {
     tryRestoreSession();
-  }, []);
+  }, [tryRestoreSession]);
 
+  // Fix: Removed `|| loading` from the guard.
+  // `loading` is set to true during form submissions (like login/OTP).
+  // Blocking render on `loading` causes the entire page to unmount and flash blank mid-flow.
   if (!initialized) return null;
 
   if (authStep !== "authed") {

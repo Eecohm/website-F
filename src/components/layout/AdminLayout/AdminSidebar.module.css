@@ -12,6 +12,7 @@
     left: 0;
     z-index: var(--z-sticky);
     border-right: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform var(--anim-base) var(--ease-out);
 }
 
 .brand {
@@ -101,4 +102,30 @@
 .logoutBtn:hover {
     background-color: var(--red-50);
     color: var(--red-600);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: calc(var(--z-sticky) - 1);
+}
+
+@media (max-width: 1024px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform var(--anim-base) var(--ease-out);
+    }
+    
+    .sidebarOpen {
+        transform: translateX(0);
+    }
+    
+    .overlay {
+        display: block;
+    }
 }

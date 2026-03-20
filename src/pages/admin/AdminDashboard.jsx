@@ -24,6 +24,13 @@ export default function AdminDashboard() {
       icon: '📜',
       path: '/app/admin/logs',
       theme: styles.cardTeal
+    },
+    {
+      title: 'Roles Management',
+      desc: 'Define custom access roles and manage granular permissions.',
+      icon: '🔐',
+      path: '/app/admin/roles',
+      theme: styles.cardPurple
     }
   ];
 

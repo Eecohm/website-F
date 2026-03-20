@@ -1,11 +1,12 @@
+// router/index.jsx
 import { BrowserRouter, Route, Routes, Outlet } from "react-router-dom";
-import { AuthProvider } from "../context/AuthContext";
 import { AdminAuthProvider } from "../context/AdminAuthContext";
 
 import { publicRoutes } from "./routes/PublicRoutes";
 import { guestUserRoutes, guestAdminRoutes } from "./routes/GuestRoutes";
 import { privateRoutes } from "./routes/PrivateRoutes";
 import { adminRoutes } from "./routes/AdminRoutes";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function AppRouter() {
   return (

@@ -1,0 +1,494 @@
+/* Wizard.module.css — multi-step registration wizard styles */
+
+.wizardContainer {
+  min-height: 100vh;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 1rem 4rem;
+}
+
+/* ── Header ── */
+.wizardHeader {
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.wizardTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.wizardSubtitle {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* ── Progress bar ── */
+.progressContainer {
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 1.5rem;
+}
+
+.progressMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.progressBarTrack {
+  height: 6px;
+  background: var(--border);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #7c3aed);
+  border-radius: 9999px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Card ── */
+.wizardCard {
+  width: 100%;
+  max-width: 680px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.cardHeader {
+  padding: 1.5rem 2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(to right, rgba(var(--primary-rgb, 99, 102, 241), 0.06), transparent);
+}
+
+.stepNumber {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.stepTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.stepDescription {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0.25rem 0 0;
+}
+
+.cardBody {
+  padding: 1.5rem 2rem;
+}
+
+/* ── Step body shared layout ── */
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 500px) {
+  .fieldRow {
+    grid-template-columns: 1fr;
+  }
+  .cardBody, .cardHeader {
+    padding: 1.25rem 1rem;
+  }
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.optional {
+  font-weight: 400;
+  color: var(--text-secondary);
+  opacity: 0.65;
+  font-size: 0.8rem;
+}
+
+.input,
+.select {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.inputError {
+  border-color: var(--error, #ef4444) !important;
+}
+
+.errorMsg {
+  font-size: 0.8rem;
+  color: var(--error, #ef4444);
+  margin-top: 2px;
+}
+
+.fieldHelp {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  opacity: 0.8;
+}
+
+.stepHint {
+  background: rgba(99, 102, 241, 0.07);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.sectionDivider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sectionDivider::before,
+.sectionDivider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Navigation ── */
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem 1.5rem;
+  border-top: 1px solid var(--border);
+  gap: 1rem;
+}
+
+.btnBack {
+  padding: 0.7rem 1.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btnBack:hover {
+  background: var(--surface);
+  color: var(--text-primary);
+}
+
+.btnBack:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btnNext {
+  padding: 0.7rem 2rem;
+  border-radius: 0.5rem;
+  border: none;
+  background: var(--primary, #6366f1);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btnNext:hover {
+  opacity: 0.88;
+}
+
+.btnNext:active {
+  transform: scale(0.98);
+}
+
+.btnNext:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btnSubmit {
+  composes: btnNext;
+  background: linear-gradient(135deg, #6366f1, #7c3aed);
+  padding: 0.75rem 2.5rem;
+}
+
+/* ── Role Selector (Step 0) ── */
+.roleSelectorWrap {
+  width: 100%;
+  max-width: 680px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.orgInputWrap {
+  position: relative;
+}
+
+.orgStatusIcon {
+  position: absolute;
+  right: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+}
+
+.roleGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.roleCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1rem 0.75rem;
+  border-radius: 0.75rem;
+  border: 2px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  text-align: center;
+}
+
+.roleCard:hover {
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.roleCardActive {
+  border-color: var(--primary);
+  background: rgba(99, 102, 241, 0.07);
+}
+
+.roleIcon {
+  font-size: 1.5rem;
+}
+
+.roleName {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.roleType {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ── Review step ── */
+.reviewIntro {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  padding: 0.75rem 1rem;
+  background: rgba(99, 102, 241, 0.06);
+  border-radius: 0.5rem;
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.roleTag {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+}
+
+.reviewSection {
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.reviewHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+
+.reviewTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.editBtn {
+  font-size: 0.8rem;
+  color: var(--primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  transition: background 0.15s;
+}
+
+.editBtn:hover {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.reviewGrid {
+  padding: 0.75rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+  margin: 0;
+}
+
+.reviewRow {
+  display: contents;
+}
+
+.reviewLabel {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-transform: capitalize;
+}
+
+.reviewValue {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+/* ── Success screen ── */
+.successScreen {
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem 2rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.successIcon {
+  font-size: 4rem;
+  animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.successTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.successMessage {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 380px;
+}
+
+/* ── Server error banner ── */
+.serverError {
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: var(--error, #ef4444);
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+/* ── Loading spinner ── */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

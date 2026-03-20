@@ -1,0 +1,226 @@
+.wizardContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  padding: 2rem;
+  background: var(--bg-default);
+}
+
+.wizardCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 700px;
+  min-height: 650px; /* Fixed vertical height base */
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Header Area */
+.cardHeader {
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  z-index: 10;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.stepIcon {
+  color: var(--primary);
+  background: rgba(99, 102, 241, 0.1);
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+}
+
+.stepTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.stepDesc {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0 0 1.5rem 0;
+}
+
+/* Progress bar inside Header */
+.progressContainer {
+  width: 100%;
+}
+.progressBarTrack {
+  height: 6px;
+  background: var(--bg-default);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.progressBarFill {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Scrollable Body */
+.cardBodyWrapper {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  background: var(--surface);
+}
+
+.cardBodyInner {
+  padding: 2rem 2.5rem;
+  animation: slideIn 0.3s forwards ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Actions Footer */
+.cardFooter {
+  padding: 1.5rem 2.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--surface);
+  z-index: 10;
+}
+
+.btnBack {
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0.6rem 1.25rem;
+  border-radius: 0.5rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btnBack:hover:not(:disabled) {
+  background: var(--bg-default);
+}
+
+.btnBack:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btnNext {
+  background: var(--primary);
+  color: #ffffff;
+  border: none;
+  padding: 0.6rem 1.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+}
+
+.btnNext:hover:not(:disabled) {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.btnNext:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Basic Info Step Custom Styles */
+.fieldRow {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (max-width: 600px) {
+  .fieldRow {
+    flex-direction: column;
+  }
+  .cardHeader, .cardBodyInner, .cardFooter {
+    padding: 1.5rem;
+  }
+  .wizardCard {
+    min-height: 80vh;
+  }
+}
+
+/* Review Step Styles */
+.reviewSection {
+  background: var(--bg-default);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.reviewHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+.reviewHeader h4 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+.editBtn {
+  background: transparent;
+  border: none;
+  color: var(--primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.reviewGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.reviewItem label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+.reviewItem span {
+  font-weight: 500;
+  color: var(--text-primary);
+}

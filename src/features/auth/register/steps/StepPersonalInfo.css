@@ -1,0 +1,79 @@
+/* Photo upload widget — scoped to StepPersonalInfo only */
+.spi-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--w-border);
+}
+
+.spi-photo-circle {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  border: 2px dashed var(--w-border);
+  background: var(--w-bg);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  flex-shrink: 0;
+  transition: var(--w-transition);
+}
+.spi-photo-circle:hover { border-color: var(--w-primary); }
+.spi-photo-circle:hover .spi-photo-overlay { opacity: 1; }
+
+.spi-photo-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.spi-photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--w-text-muted);
+  font-size: 10px;
+  font-weight: 500;
+  text-align: center;
+  padding: 8px;
+}
+
+.spi-photo-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(59, 91, 219, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  opacity: 0;
+  transition: var(--w-transition);
+  border-radius: 50%;
+}
+
+.spi-photo-meta { flex: 1; }
+.spi-photo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1.5px solid var(--w-border);
+  border-radius: var(--w-radius-sm);
+  background: var(--w-surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--w-text);
+  cursor: pointer;
+  transition: var(--w-transition);
+  font-family: inherit;
+  margin-bottom: 6px;
+}
+.spi-photo-btn:hover { border-color: var(--w-primary); color: var(--w-primary); }
+.spi-photo-hint { font-size: 11px; color: var(--w-text-muted); margin: 4px 0 0; line-height: 1.5; }

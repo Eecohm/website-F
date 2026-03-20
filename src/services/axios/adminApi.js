@@ -2,7 +2,10 @@ import axios from "axios";
 import { defaultConfig } from "./config";
 import { getCsrfToken } from "./crsfHelper";
 
-const adminApi = axios.create(defaultConfig);
+const adminApi = axios.create({
+  ...defaultConfig,
+  withCredentials: true
+});
 
 
 adminApi.interceptors.request.use((config) => {

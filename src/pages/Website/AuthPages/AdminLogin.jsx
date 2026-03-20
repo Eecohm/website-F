@@ -149,7 +149,7 @@ export default function AdminLogin() {
         <form className={`${styles.form} ${styles.stepContainer}`} onSubmit={handleOtpSubmit} noValidate>
           <div className={styles.otpInstructions}>
             A one-time password has been sent to <strong>{email}</strong>.
-            It will expire in 10 minutes.
+            It will expire in 5 minutes.
           </div>
 
           <TextInput

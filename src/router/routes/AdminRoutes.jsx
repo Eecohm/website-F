@@ -1,3 +1,4 @@
+// AdminRoutes.jsx
 import AdminRoute from "@/router/guards/AdminRoutes";
 import { AdminLayout } from "@/components/layout/AdminLayout/AdminLayout";
 import AdminDashboard from "@/pages/admin/AdminDashboard";
@@ -7,6 +8,7 @@ import SystemLogs from "@/pages/admin/sections/SystemLogs";
 import OrgProfileSetup from "@/pages/admin/sections/OrgProfileSetup";
 import SubOrgList from "@/pages/admin/sections/SubOrgs/SubOrgList";
 import SubOrgForm from "@/pages/admin/sections/SubOrgs/SubOrgForm";
+import RolesManagement from "@/pages/admin/sections/Roles/RolesManagement";
 
 export const adminRoutes = [
   {
@@ -21,6 +23,7 @@ export const adminRoutes = [
       { path: "sub-orgs", element: <SubOrgList /> },
       { path: "sub-orgs/new", element: <SubOrgForm /> },
       { path: "sub-orgs/:code", element: <SubOrgForm /> },
+      { path: "roles", element: <RolesManagement /> },
     ]
   },
 ];
