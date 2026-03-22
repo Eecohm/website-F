@@ -13,11 +13,11 @@ export default function Login() {
   const { addToast } = useToast();
   const { isAuthenticated, user, loading, signIn } = useAuth();
 
-  const [email, setEmail]       = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loadingState, setLoadingState] = useState(false);
-  const [errors, setErrors]             = useState({});
-  const [serverError, setServerError]   = useState('');
+  const [errors, setErrors] = useState({});
+  const [serverError, setServerError] = useState('');
 
   function validate() {
     const errs = {};
@@ -64,11 +64,11 @@ export default function Login() {
 
   if (isAuthenticated) {
     const s = user?.membership_status;
-    if (!user?.profile_complete)  return <Navigate to="/app/profile/setup" replace />;
-    if (s === 'pending')          return <Navigate to="/app/profile/setup" replace />;
-    if (s === 'waiting_approval') return <Navigate to="/setup/status"      replace />;
-    if (s === 'rejected')         return <Navigate to="/setup/status"      replace />;
-    if (s === 'suspended')        return <Navigate to="/setup/status"      replace />;
+    if (!user?.profile_complete) return <Navigate to="/here" replace />;
+    if (s === 'pending') return <Navigate to="/app/profile/setup" replace />;
+    if (s === 'waiting_approval') return <Navigate to="/setup/status" replace />;
+    if (s === 'rejected') return <Navigate to="/setup/status" replace />;
+    if (s === 'suspended') return <Navigate to="/setup/status" replace />;
     return <Navigate to="/app/dashboard" replace />;
   }
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
     Building2, FileText, Globe, Save, Navigation, RefreshCw,
-    AlertTriangle, ShieldAlert, CheckCircle2, Lock, Image as ImageIcon, Plus
+    AlertTriangle, ShieldAlert, CheckCircle2, Lock, Image as ImageIcon,
+    Plus, Trash2, User, Crown, Edit2, X
 } from 'lucide-react';
 import adminApi from '@/services/axios/adminApi';
 import { Button } from '@/components/ui/Button';
@@ -22,21 +23,31 @@ const SCHOOL_TYPES = [
 ];
 
 const ACCREDITATION_STATUSES = [
-    { value: 'fully_accredited', label: 'Fully Accredited' },
+    { value: 'accredited', label: 'Fully Accredited' },
     { value: 'provisionally_accredited', label: 'Provisionally Accredited' },
-    { value: 'not_accredited', label: 'Not Accredited' },
+    { value: 'not_applicable', label: 'Not Accredited' },
     { value: 'pending', label: 'Pending' },
+    { value: 'expired', label: 'Expired' },
 ];
 
-const ID_TYPES = [
-    { value: 'passport', label: 'Passport' },
-    { value: 'national_id', label: 'National ID' },
-    { value: 'driving_license', label: 'Driving License' },
-];
+// Empty owner form template — matches OrgOwner model fields exactly
+const EMPTY_OWNER_FORM = {
+    full_legal_name: '',
+    is_primary: false,
+    pan_number: '',
+    pan_document: null,
+    national_id_number: '',
+    national_id_document: null,
+    driving_license_number: '',
+    driving_license_document: null,
+    passport_number: '',
+    passport_document: null,
+    ownership_document: null,
+};
 
 /**
- * Checks if two objects differ (shallow check for strings/booleans).
- * For files, it checks if it's a File object instead of a string (URL).
+ * Shallow dirty check — returns true if current differs from original.
+ * File objects always count as dirty.
  */
 const isDirtyCheck = (original, current) => {
     if (!original || !current) return false;
@@ -63,123 +74,434 @@ const Toggle = ({ id, label, checked, onChange, disabled }) => (
     </label>
 );
 
-const FileUpload = ({ label, currentFileUrl, onChange, accept = "image/*,.pdf" }) => {
-    return (
-        <div className={styles.inputGroup}>
-            <span className={styles.label}>{label}</span>
-            <div className={styles.fileUploadWrapper}>
-                <div className={styles.fileInfo}>
-                    {currentFileUrl && typeof currentFileUrl === 'string' ? (
-                        currentFileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
-                            <img src={currentFileUrl} className={styles.filePreviewImg} alt="preview" />
-                        ) : (
-                            <FileText className={styles.fileIcon} size={20} />
-                        )
+const FileUpload = ({ label, currentFileUrl, onChange, accept = "image/*,.pdf" }) => (
+    <div className={styles.inputGroup}>
+        <span className={styles.label}>{label}</span>
+        <div className={styles.fileUploadWrapper}>
+            <div className={styles.fileInfo}>
+                {currentFileUrl && typeof currentFileUrl === 'string' ? (
+                    currentFileUrl.match(/\.(jpeg|jpg|gif|png)$/i) ? (
+                        <img src={currentFileUrl} className={styles.filePreviewImg} alt="preview" />
                     ) : (
-                        <ImageIcon className={styles.fileIcon} size={20} />
-                    )}
-                    <span className={styles.fileName}>
-                        {currentFileUrl instanceof File ? currentFileUrl.name : (currentFileUrl ? "Existing File Uploaded" : "No file selected")}
-                    </span>
+                        <FileText className={styles.fileIcon} size={20} />
+                    )
+                ) : (
+                    <ImageIcon className={styles.fileIcon} size={20} />
+                )}
+                <span className={styles.fileName}>
+                    {currentFileUrl instanceof File
+                        ? currentFileUrl.name
+                        : currentFileUrl
+                            ? 'Existing File Uploaded'
+                            : 'No file selected'}
+                </span>
+            </div>
+            <div className={styles.fileAction}>
+                <Button variant="secondary" size="sm" as="span">Replace</Button>
+                <input
+                    type="file"
+                    accept={accept}
+                    onChange={(e) => { if (e.target.files[0]) onChange(e.target.files[0]); }}
+                    className={styles.hiddenFileInput}
+                />
+            </div>
+        </div>
+    </div>
+);
+
+// ── OWNER FORM — used for both create and edit ────────────────────────────────
+
+function OwnerForm({ initial = EMPTY_OWNER_FORM, onSave, onCancel, saving }) {
+    const [form, setForm] = useState({ ...initial });
+    const [error, setError] = useState(null);
+
+    function update(key, value) {
+        setForm(prev => ({ ...prev, [key]: value }));
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setError(null);
+        if (!form.full_legal_name.trim()) {
+            setError('Full legal name is required.');
+            return;
+        }
+        await onSave(form, setError);
+    }
+
+    return (
+        <form onSubmit={handleSubmit} className={styles.ownerForm}>
+            <div className={styles.formGrid}>
+                {/* Full legal name — required */}
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <label className={styles.label}>Full Legal Name *</label>
+                    <input
+                        className={styles.input}
+                        value={form.full_legal_name}
+                        onChange={e => update('full_legal_name', e.target.value)}
+                        placeholder="Exactly as on official documents"
+                        required
+                    />
                 </div>
-                <div className={styles.fileAction}>
-                    <Button variant="secondary" size="sm" as="span">Replace</Button>
-                    <input 
-                        type="file" 
-                        accept={accept} 
-                        onChange={(e) => { if (e.target.files[0]) onChange(e.target.files[0]); }} 
-                        className={styles.hiddenFileInput} 
+
+                {/* Primary toggle */}
+                <div className={styles.inputGroup}>
+                    <span className={styles.label}>Primary Owner</span>
+                    <Toggle
+                        id="owner-primary"
+                        label={form.is_primary ? 'Yes — primary legal owner' : 'No — additional owner'}
+                        checked={form.is_primary}
+                        onChange={val => update('is_primary', val)}
+                    />
+                </div>
+
+                {/* PAN */}
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>PAN Number</label>
+                    <input
+                        className={styles.input}
+                        value={form.pan_number}
+                        onChange={e => update('pan_number', e.target.value)}
+                        placeholder="PAN card number"
+                    />
+                </div>
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <FileUpload
+                        label="PAN Card Document"
+                        accept=".pdf,image/*"
+                        currentFileUrl={form.pan_document}
+                        onChange={file => update('pan_document', file)}
+                    />
+                </div>
+
+                {/* National ID */}
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>National ID Number</label>
+                    <input
+                        className={styles.input}
+                        value={form.national_id_number}
+                        onChange={e => update('national_id_number', e.target.value)}
+                        placeholder="National ID number"
+                    />
+                </div>
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <FileUpload
+                        label="National ID Document"
+                        accept=".pdf,image/*"
+                        currentFileUrl={form.national_id_document}
+                        onChange={file => update('national_id_document', file)}
+                    />
+                </div>
+
+                {/* Driving License — optional */}
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>Driving License Number <span className={styles.optionalTag}>(optional)</span></label>
+                    <input
+                        className={styles.input}
+                        value={form.driving_license_number}
+                        onChange={e => update('driving_license_number', e.target.value)}
+                        placeholder="License number if available"
+                    />
+                </div>
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <FileUpload
+                        label="Driving License Document (optional)"
+                        accept=".pdf,image/*"
+                        currentFileUrl={form.driving_license_document}
+                        onChange={file => update('driving_license_document', file)}
+                    />
+                </div>
+
+                {/* Passport — optional */}
+                <div className={styles.inputGroup}>
+                    <label className={styles.label}>Passport Number <span className={styles.optionalTag}>(optional)</span></label>
+                    <input
+                        className={styles.input}
+                        value={form.passport_number}
+                        onChange={e => update('passport_number', e.target.value)}
+                        placeholder="Passport number if available"
+                    />
+                </div>
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <FileUpload
+                        label="Passport Document (optional)"
+                        accept=".pdf,image/*"
+                        currentFileUrl={form.passport_document}
+                        onChange={file => update('passport_document', file)}
+                    />
+                </div>
+
+                {/* Ownership document */}
+                <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
+                    <FileUpload
+                        label="Ownership Document (deed / board resolution / certificate)"
+                        accept=".pdf,image/*"
+                        currentFileUrl={form.ownership_document}
+                        onChange={file => update('ownership_document', file)}
                     />
                 </div>
             </div>
-        </div>
+
+            {error && (
+                <div className={styles.inlineError}>
+                    <AlertTriangle size={16} /> {error}
+                </div>
+            )}
+
+            <div className={styles.ownerFormActions}>
+                <Button type="button" variant="ghost" onClick={onCancel} disabled={saving}>
+                    <X size={14} /> Cancel
+                </Button>
+                <Button type="submit" variant="primary" loading={saving}>
+                    <Save size={14} /> Save Owner
+                </Button>
+            </div>
+        </form>
     );
 }
 
-// ── 1. ORGANIZATION CARD ─────────────────────────────────────────────────────
+// ── OWNERS CARD ───────────────────────────────────────────────────────────────
 
-function OrganizationCard({ org }) {
-    const [formData, setFormData] = useState({ is_active: org?.is_active, deactivation_reason: org?.deactivation_reason || '' });
+function OwnersCard() {
+    const [owners, setOwners] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [error, setError] = useState(null);
+    const [showForm, setShowForm] = useState(false);       // create form visible
+    const [editingOwner, setEditingOwner] = useState(null); // owner object being edited
+    const [deletingId, setDeletingId] = useState(null);    // id currently being deleted
     const { addToast } = useToast();
 
-    const isDirty = formData.is_active !== org?.is_active || formData.deactivation_reason !== (org?.deactivation_reason || '');
-
-    const handleSave = async () => {
-        if (formData.is_active === false && org.is_active === true) {
-            if (!window.confirm("Deactivating this org will block all user logins. Confirm?")) return;
-        }
-        setSaving(true);
-        setError(null);
+    // Fetch all owners for this org from the owners endpoint
+    const fetchOwners = useCallback(async () => {
+        setLoading(true);
         try {
-            await adminApi.patch('/org/me/', formData); // Assumed endpoint
-            addToast({ message: "Organization status updated.", type: "success" });
-            // Ideally we'd bubble the update up, but we just reset dirty state loosely for now
-            org.is_active = formData.is_active;
-            org.deactivation_reason = formData.deactivation_reason;
+            const { data } = await adminApi.get('/org/sys/owners/');
+            setOwners(data);
         } catch (err) {
-            setError(err.response?.data?.detail || "Failed to update organization.");
+            addToast({ type: 'error', message: 'Failed to load owners.' });
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    useEffect(() => { fetchOwners(); }, [fetchOwners]);
+
+    // Build multipart FormData from owner form state
+    function buildPayload(form) {
+        const payload = new FormData();
+        const textFields = [
+            'full_legal_name', 'is_primary',
+            'pan_number', 'national_id_number',
+            'driving_license_number', 'passport_number',
+        ];
+        textFields.forEach(key => {
+            // Convert boolean to string for FormData
+            if (form[key] !== null && form[key] !== undefined && form[key] !== '') {
+                payload.append(key, String(form[key]));
+            }
+        });
+        const fileFields = [
+            'pan_document', 'national_id_document',
+            'driving_license_document', 'passport_document',
+            'ownership_document',
+        ];
+        fileFields.forEach(key => {
+            // Only append if user selected a new file — never send the old URL string
+            if (form[key] instanceof File) {
+                payload.append(key, form[key]);
+            }
+        });
+        return payload;
+    }
+
+    async function handleCreate(form, setError) {
+        setSaving(true);
+        try {
+            await adminApi.post('/org/sys/owners/', buildPayload(form), {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            addToast({ type: 'success', message: 'Owner added successfully.' });
+            setShowForm(false);
+            fetchOwners();
+        } catch (err) {
+            const msg = err.response?.data?.detail
+                || err.response?.data?.is_primary?.[0]
+                || err.response?.data?.full_legal_name?.[0]
+                || 'Failed to add owner.';
+            setError(msg);
         } finally {
             setSaving(false);
         }
-    };
+    }
 
-    if (!org) return null;
+    async function handleEdit(form, setError) {
+        setSaving(true);
+        try {
+            await adminApi.patch(`/org/sys/owners/${editingOwner.id}/`, buildPayload(form), {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+            addToast({ type: 'success', message: 'Owner updated successfully.' });
+            setEditingOwner(null);
+            fetchOwners();
+        } catch (err) {
+            const msg = err.response?.data?.detail
+                || err.response?.data?.is_primary?.[0]
+                || 'Failed to update owner.';
+            setError(msg);
+        } finally {
+            setSaving(false);
+        }
+    }
+
+    async function handleDelete(owner) {
+        if (owner.is_primary) {
+            addToast({ type: 'error', message: 'Cannot delete the primary owner. Assign another owner as primary first.' });
+            return;
+        }
+        if (!window.confirm(`Delete owner "${owner.full_legal_name}"? This cannot be undone.`)) return;
+        setDeletingId(owner.id);
+        try {
+            await adminApi.delete(`/org/sys/owners/${owner.id}/`);
+            addToast({ type: 'success', message: 'Owner deleted.' });
+            fetchOwners();
+        } catch (err) {
+            addToast({ type: 'error', message: err.response?.data?.detail || 'Failed to delete owner.' });
+        } finally {
+            setDeletingId(null);
+        }
+    }
+
+    // Fetch full detail (includes sensitive ID numbers) when editing
+    async function openEdit(owner) {
+        try {
+            const { data } = await adminApi.get(`/org/sys/owners/${owner.id}/`);
+            setEditingOwner(data);
+            setShowForm(false); // close create form if open
+        } catch {
+            addToast({ type: 'error', message: 'Failed to load owner details.' });
+        }
+    }
 
     return (
         <div className={styles.card}>
             <div className={styles.cardHeader}>
                 <div className={styles.cardTitleGroup}>
-                    <div className={`${styles.cardIcon} ${styles.iconRed}`}><ShieldAlert size={18} /></div>
+                    <div className={`${styles.cardIcon} ${styles.iconGold}`}><User size={18} /></div>
                     <div>
-                        <div className={styles.cardTitle}>Tenant Status</div>
-                        <div className={styles.cardSubtitle}>Core organization record ({org.slug})</div>
+                        <div className={styles.cardTitle}>Organization Owners</div>
+                        <div className={styles.cardSubtitle}>
+                            Legal owners and principals — for compliance purposes only
+                        </div>
                     </div>
                 </div>
                 <div className={styles.cardActions}>
-                    {isDirty && <span className={styles.dirtyDot}>Unsaved</span>}
-                    <Button variant="primary" size="sm" onClick={handleSave} disabled={!isDirty || saving} loading={saving}>
-                        <Save size={14} /> Save Status
-                    </Button>
+                    {/* Only show Add button when no form is open */}
+                    {!showForm && !editingOwner && (
+                        <Button variant="primary" size="sm" onClick={() => setShowForm(true)}>
+                            <Plus size={14} /> Add Owner
+                        </Button>
+                    )}
                 </div>
             </div>
-            
-            <div className={styles.cardBody} style={{ padding: 'var(--space-4)' }}>
-                <div className={styles.formGrid}>
-                   <div className={styles.inputGroup}>
-                        <span className={styles.label}>Tenant Status</span>
-                        <Toggle 
-                            id="org-active"
-                            label={formData.is_active ? "Active" : "Deactivated"}
-                            checked={formData.is_active}
-                            onChange={(val) => setFormData(p => ({ ...p, is_active: val }))}
-                        />
-                   </div>
-                   <div className={styles.inputGroup}>
-                       <TextInput 
-                            id="org-deact-reason"
-                            label="Deactivation Reason"
-                            value={formData.deactivation_reason}
-                            onChange={(e) => setFormData(p => ({ ...p, deactivation_reason: e.target.value }))}
-                            placeholder="e.g. Non-payment, Compliance violations"
-                            disabled={formData.is_active}
-                       />
-                       <div className={styles.helpText}>Required if status is deactivated.</div>
-                   </div>
+
+            {/* Create form — shown inline above the list */}
+            {showForm && (
+                <div className={styles.ownerFormContainer}>
+                    <div className={styles.ownerFormHeader}>
+                        <span className={styles.ownerFormTitle}>New Owner</span>
+                    </div>
+                    <OwnerForm
+                        initial={EMPTY_OWNER_FORM}
+                        onSave={handleCreate}
+                        onCancel={() => setShowForm(false)}
+                        saving={saving}
+                    />
                 </div>
-                {org.deactivated_at && !formData.is_active && (
-                    <div className={styles.helpText} style={{marginTop: 'var(--space-2)'}}>
-                        Deactivated on: {new Date(org.deactivated_at).toLocaleString()}
+            )}
+
+            {/* Owners list */}
+            <div className={styles.ownersList}>
+                {loading && (
+                    <div className={styles.stateContainer}>
+                        <Spinner size="sm" />
+                        <span>Loading owners...</span>
                     </div>
                 )}
-                {error && <div className={styles.inlineError}><AlertTriangle size={16} /> {error}</div>}
+
+                {!loading && owners.length === 0 && !showForm && (
+                    <div className={styles.stateContainer} style={{ padding: 'var(--space-6)' }}>
+                        <User size={32} style={{ color: 'var(--color-text-muted)' }} />
+                        <p style={{ color: 'var(--color-text-muted)', margin: 0 }}>
+                            No owners added yet. Add the primary legal owner to get started.
+                        </p>
+                    </div>
+                )}
+
+                {!loading && owners.map(owner => (
+                    <div key={owner.id}>
+                        {/* Owner row */}
+                        {editingOwner?.id !== owner.id && (
+                            <div className={`${styles.ownerRow} ${owner.is_primary ? styles.ownerRowPrimary : ''}`}>
+                                <div className={styles.ownerRowInfo}>
+                                    <div className={styles.ownerName}>
+                                        {owner.is_primary && (
+                                            <Crown size={14} className={styles.primaryIcon} />
+                                        )}
+                                        {owner.full_legal_name}
+                                        {owner.is_primary && (
+                                            <span className={`${styles.badge} ${styles.badgeTeal}`}>Primary</span>
+                                        )}
+                                    </div>
+                                    {owner.user_email && (
+                                        <div className={styles.ownerMeta}>Platform user: {owner.user_email}</div>
+                                    )}
+                                </div>
+                                <div className={styles.ownerRowActions}>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => openEdit(owner)}
+                                    >
+                                        <Edit2 size={14} /> Edit
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleDelete(owner)}
+                                        disabled={deletingId === owner.id || owner.is_primary}
+                                        loading={deletingId === owner.id}
+                                        style={{ color: owner.is_primary ? 'var(--color-text-muted)' : 'var(--color-danger)' }}
+                                    >
+                                        <Trash2 size={14} /> Delete
+                                    </Button>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Edit form — inline below the row being edited */}
+                        {editingOwner?.id === owner.id && (
+                            <div className={styles.ownerFormContainer}>
+                                <div className={styles.ownerFormHeader}>
+                                    <span className={styles.ownerFormTitle}>
+                                        Editing: {editingOwner.full_legal_name}
+                                    </span>
+                                </div>
+                                <OwnerForm
+                                    initial={editingOwner}
+                                    onSave={handleEdit}
+                                    onCancel={() => setEditingOwner(null)}
+                                    saving={saving}
+                                />
+                            </div>
+                        )}
+                    </div>
+                ))}
             </div>
         </div>
     );
 }
 
-// ── 2. ORGANIZATION PROFILE CARD ─────────────────────────────────────────────
+// ── 2. ORGANIZATION PROFILE CARD — unchanged from original ───────────────────
 
 function OrganizationProfileCard({ profile }) {
     const [formData, setFormData] = useState({ ...profile });
@@ -201,14 +523,13 @@ function OrganizationProfileCard({ profile }) {
                 }
             });
             const { data } = await adminApi.patch('/org/profile/me/', payload, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
-            Object.assign(profile, data); 
-            addToast({ message: "Profile updated successfully.", type: "success" });
-            // Re-sync form so objects match exactly avoiding endless dirty
-            setFormData({ ...data }); 
+            Object.assign(profile, data);
+            addToast({ message: 'Profile updated successfully.', type: 'success' });
+            setFormData({ ...data });
         } catch (err) {
-            setError(err.response?.data?.detail || "Failed to update profile.");
+            setError(err.response?.data?.detail || 'Failed to update profile.');
         } finally {
             setSaving(false);
         }
@@ -238,7 +559,11 @@ function OrganizationProfileCard({ profile }) {
             <div className={styles.tabsContainer}>
                 <div className={styles.tabsList}>
                     {['core', 'branding', 'address', 'contact', 'social'].map(tab => (
-                        <button key={tab} className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`} onClick={() => setActiveTab(tab)}>
+                        <button
+                            key={tab}
+                            className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`}
+                            onClick={() => setActiveTab(tab)}
+                        >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
                         </button>
                     ))}
@@ -257,7 +582,6 @@ function OrganizationProfileCard({ profile }) {
                                 </select>
                             </div>
                             <TextInput id="pro-est" label="Established Year" type="number" value={formData.established_year || ''} onChange={e => setFormData(p => ({ ...p, established_year: e.target.value }))} />
-                            
                             <div className={`${styles.inputGroup} ${styles.formGridFull}`}>
                                 <label className={styles.label}>Tagline</label>
                                 <input className={styles.input} value={formData.tagline || ''} onChange={e => setFormData(p => ({ ...p, tagline: e.target.value }))} placeholder="Inspiring motto..." />
@@ -268,23 +592,41 @@ function OrganizationProfileCard({ profile }) {
                             </div>
                         </div>
                     )}
-
                     {activeTab === 'branding' && (
                         <div className={styles.formGrid}>
                             <FileUpload label="Logo" accept="image/*" currentFileUrl={formData.logo} onChange={file => setFormData(p => ({ ...p, logo: file }))} />
                             <FileUpload label="Favicon" accept="image/*" currentFileUrl={formData.favicon} onChange={file => setFormData(p => ({ ...p, favicon: file }))} />
                             <FileUpload label="Cover Image" accept="image/*" currentFileUrl={formData.cover_image} onChange={file => setFormData(p => ({ ...p, cover_image: file }))} />
-                            
+
+                            {/* Primary color */}
                             <div className={styles.inputGroup}>
                                 <span className={styles.label}>Primary Brand Color</span>
                                 <div className={styles.colorPickerGroup}>
-                                    <input type="color" className={styles.colorInput} value={formData.primary_color || '#000000'} onChange={e => setFormData(p => ({ ...p, primary_color: e.target.value }))} />
-                                    <input type="text" className={`${styles.input} ${styles.colorTextInput}`} placeholder="#RRGGBB" value={formData.primary_color || ''} onChange={e => setFormData(p => ({ ...p, primary_color: e.target.value }))} />
+                                    <input type="color" className={styles.colorInput}
+                                        value={formData.primary_color || '#000000'}
+                                        onChange={e => setFormData(p => ({ ...p, primary_color: e.target.value }))} />
+                                    <input type="text" className={`${styles.input} ${styles.colorTextInput}`}
+                                        placeholder="#RRGGBB"
+                                        value={formData.primary_color || ''}
+                                        onChange={e => setFormData(p => ({ ...p, primary_color: e.target.value }))} />
+                                </div>
+                            </div>
+
+                            {/* Secondary color — new */}
+                            <div className={styles.inputGroup}>
+                                <span className={styles.label}>Secondary Brand Color</span>
+                                <div className={styles.colorPickerGroup}>
+                                    <input type="color" className={styles.colorInput}
+                                        value={formData.secondary_color || '#000000'}
+                                        onChange={e => setFormData(p => ({ ...p, secondary_color: e.target.value }))} />
+                                    <input type="text" className={`${styles.input} ${styles.colorTextInput}`}
+                                        placeholder="#RRGGBB"
+                                        value={formData.secondary_color || ''}
+                                        onChange={e => setFormData(p => ({ ...p, secondary_color: e.target.value }))} />
                                 </div>
                             </div>
                         </div>
                     )}
-
                     {activeTab === 'address' && (
                         <div className={styles.formGrid}>
                             <TextInput id="addr-1" label="Address Line 1" value={formData.address_line_1 || ''} onChange={e => setFormData(p => ({ ...p, address_line_1: e.target.value }))} />
@@ -295,7 +637,6 @@ function OrganizationProfileCard({ profile }) {
                             <TextInput id="addr-country" label="Country" value={formData.country || ''} onChange={e => setFormData(p => ({ ...p, country: e.target.value }))} />
                         </div>
                     )}
-
                     {activeTab === 'contact' && (
                         <div className={styles.formGrid}>
                             <TextInput id="phone-1" label="Primary Phone" type="tel" value={formData.phone_primary || ''} onChange={e => setFormData(p => ({ ...p, phone_primary: e.target.value }))} />
@@ -307,7 +648,6 @@ function OrganizationProfileCard({ profile }) {
                             </div>
                         </div>
                     )}
-
                     {activeTab === 'social' && (
                         <div className={styles.formGrid}>
                             <TextInput id="soc-fb" label="Facebook URL" value={formData.facebook_url || ''} onChange={e => setFormData(p => ({ ...p, facebook_url: e.target.value }))} />
@@ -317,7 +657,6 @@ function OrganizationProfileCard({ profile }) {
                             <TextInput id="soc-yt" label="YouTube URL" value={formData.youtube_url || ''} onChange={e => setFormData(p => ({ ...p, youtube_url: e.target.value }))} />
                         </div>
                     )}
-
                     {error && <div className={styles.inlineError}><AlertTriangle size={16} /> {error}</div>}
                 </div>
             </div>
@@ -325,16 +664,16 @@ function OrganizationProfileCard({ profile }) {
     );
 }
 
-// ── 3. ORGANIZATION LEGAL CARD ───────────────────────────────────────────────
+// ── 3. ORGANIZATION LEGAL CARD — owner tab removed, rest unchanged ────────────
 
 function OrganizationLegalCard({ legal }) {
     const [formData, setFormData] = useState({ ...(legal || {}) });
-    const [activeTab, setActiveTab] = useState('owner');
+    // Owner tab removed — owners now have their own card
+    const [activeTab, setActiveTab] = useState('registration');
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
     const { addToast } = useToast();
 
-    // Default object if legal model hasn't been created yet on backend
     const currentData = legal || {};
     const isDirty = isDirtyCheck(currentData, formData);
 
@@ -349,13 +688,13 @@ function OrganizationLegalCard({ legal }) {
                 }
             });
             const { data } = await adminApi.patch('/org/legal/me/', payload, {
-                headers: { 'Content-Type': 'multipart/form-data' }
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             if (legal) Object.assign(legal, data);
-            addToast({ message: "Legal data updated successfully.", type: "success" });
-            setFormData({ ...data }); 
+            addToast({ message: 'Legal data updated successfully.', type: 'success' });
+            setFormData({ ...data });
         } catch (err) {
-            setError(err.response?.data?.detail || "Failed to update legal data. Endpoints may be pending.");
+            setError(err.response?.data?.detail || 'Failed to update legal data.');
         } finally {
             setSaving(false);
         }
@@ -366,7 +705,6 @@ function OrganizationLegalCard({ legal }) {
             <div className={`${styles.progressBarOuter} ${styles.legalProgressBar}`}>
                 <div className={styles.progressBarInner} style={{ width: `${currentData.legal_completion_percent || 0}%` }} />
             </div>
-
             {currentData.is_registration_expired && (
                 <div className={styles.dangerBanner}>
                     <ShieldAlert size={16} /> Registration has expired! Please update registration documents.
@@ -377,7 +715,6 @@ function OrganizationLegalCard({ legal }) {
                     <AlertTriangle size={16} /> Accreditation has expired. Please verify records.
                 </div>
             )}
-
             <div className={styles.cardHeader}>
                 <div className={styles.cardTitleGroup}>
                     <div className={`${styles.cardIcon} ${styles.iconNavy}`}><Lock size={18} /></div>
@@ -396,58 +733,43 @@ function OrganizationLegalCard({ legal }) {
 
             <div className={styles.tabsContainer}>
                 <div className={styles.tabsList}>
-                    {['owner', 'registration', 'tax', 'accreditation', 'notes'].map(tab => (
-                        <button key={tab} className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`} onClick={() => setActiveTab(tab)}>
+                    {/* owner tab removed — now a separate card */}
+                    {['registration', 'tax', 'accreditation', 'notes'].map(tab => (
+                        <button
+                            key={tab}
+                            className={`${styles.tabBtn} ${activeTab === tab ? styles.tabBtnActive : ''}`}
+                            onClick={() => setActiveTab(tab)}
+                        >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
                         </button>
                     ))}
                 </div>
 
                 <div className={styles.tabContent}>
-                    {activeTab === 'owner' && (
-                        <div className={styles.formGrid}>
-                            <TextInput id="leg-own-name" label="Owner Full Name" value={formData.owner_full_name || ''} onChange={e => setFormData(p => ({ ...p, owner_full_name: e.target.value }))} />
-                            <TextInput id="leg-own-title" label="Owner Title" value={formData.owner_title || ''} onChange={e => setFormData(p => ({ ...p, owner_title: e.target.value }))} />
-                            <div className={styles.inputGroup}>
-                                <label className={styles.label}>Owner ID Type</label>
-                                <select className={styles.select} value={formData.owner_id_type || ''} onChange={e => setFormData(p => ({ ...p, owner_id_type: e.target.value }))}>
-                                    <option value="">Select ID Type...</option>
-                                    {ID_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
-                                </select>
-                            </div>
-                            <div className={styles.inputGroup}>
-                                <TextInput id="leg-own-num" label="Owner ID Number" value={formData.owner_id_number || ''} onChange={e => setFormData(p => ({ ...p, owner_id_number: e.target.value }))} />
-                                <div className={styles.helpText}>Encrypted at rest. Do not expose in public UI.</div>
-                            </div>
-                        </div>
-                    )}
-
                     {activeTab === 'registration' && (
                         <div className={styles.formGrid}>
                             <TextInput id="reg-num" label="Registration Number" value={formData.registration_number || ''} onChange={e => setFormData(p => ({ ...p, registration_number: e.target.value }))} />
                             <TextInput id="reg-date" label="Registration Date" type="date" value={formData.registration_date || ''} onChange={e => setFormData(p => ({ ...p, registration_date: e.target.value }))} />
                             <TextInput id="reg-with" label="Registered With" placeholder="e.g. Ministry of Education" value={formData.registered_with || ''} onChange={e => setFormData(p => ({ ...p, registered_with: e.target.value }))} />
                             <TextInput id="reg-exp" label="Registration Expiry" type="date" value={formData.registration_expiry || ''} onChange={e => setFormData(p => ({ ...p, registration_expiry: e.target.value }))} />
-                            <div className={`${styles.formGridFull}`}>
+                            <div className={styles.formGridFull}>
                                 <FileUpload label="Registration Document" accept=".pdf,image/*" currentFileUrl={formData.registration_document} onChange={file => setFormData(p => ({ ...p, registration_document: file }))} />
                                 <div className={styles.helpText}>Secure document vault (PDF/Image). Visible only to platform compliance.</div>
                             </div>
                         </div>
                     )}
-
                     {activeTab === 'tax' && (
                         <div className={styles.formGrid}>
                             <TextInput id="tax-id" label="Tax ID Number" value={formData.tax_id_number || ''} onChange={e => setFormData(p => ({ ...p, tax_id_number: e.target.value }))} />
                             <div className={styles.inputGroup}>
                                 <span className={styles.label}>VAT Registration</span>
-                                <Toggle id="vat-reg" label={formData.vat_registered ? "Registered for VAT" : "Not Registered"} checked={formData.vat_registered} onChange={val => setFormData(p => ({ ...p, vat_registered: val }))} />
+                                <Toggle id="vat-reg" label={formData.vat_registered ? 'Registered for VAT' : 'Not Registered'} checked={formData.vat_registered} onChange={val => setFormData(p => ({ ...p, vat_registered: val }))} />
                             </div>
                             {formData.vat_registered && (
                                 <TextInput id="vat-num" label="VAT Number" value={formData.vat_number || ''} onChange={e => setFormData(p => ({ ...p, vat_number: e.target.value }))} />
                             )}
                         </div>
                     )}
-
                     {activeTab === 'accreditation' && (
                         <div className={styles.formGrid}>
                             <div className={styles.inputGroup}>
@@ -461,13 +783,11 @@ function OrganizationLegalCard({ legal }) {
                             <TextInput id="acc-num" label="Accreditation Number" value={formData.accreditation_number || ''} onChange={e => setFormData(p => ({ ...p, accreditation_number: e.target.value }))} />
                             <TextInput id="acc-from" label="Valid From" type="date" value={formData.accreditation_valid_from || ''} onChange={e => setFormData(p => ({ ...p, accreditation_valid_from: e.target.value }))} />
                             <TextInput id="acc-to" label="Valid Until" type="date" value={formData.accreditation_valid_until || ''} onChange={e => setFormData(p => ({ ...p, accreditation_valid_until: e.target.value }))} />
-                            
-                            <div className={`${styles.formGridFull}`}>
+                            <div className={styles.formGridFull}>
                                 <FileUpload label="Accreditation Certificate" accept=".pdf,image/*" currentFileUrl={formData.accreditation_document} onChange={file => setFormData(p => ({ ...p, accreditation_document: file }))} />
                             </div>
                         </div>
                     )}
-
                     {activeTab === 'notes' && (
                         <div className={`${styles.formGrid} ${styles.formGridFull}`}>
                             <div className={styles.inputGroup}>
@@ -477,7 +797,6 @@ function OrganizationLegalCard({ legal }) {
                             </div>
                         </div>
                     )}
-
                     {error && <div className={styles.inlineError}><AlertTriangle size={16} /> {error}</div>}
                 </div>
             </div>
@@ -485,19 +804,16 @@ function OrganizationLegalCard({ legal }) {
     );
 }
 
-// ── 4. DOMAINS CARD ──────────────────────────────────────────────────────────
+// ── 4. DOMAINS CARD — unchanged from original ─────────────────────────────────
 
 function DomainsCard({ domains: initialDomains, onRefresh }) {
     const [domains, setDomains] = useState(initialDomains || []);
     const [newDomain, setNewDomain] = useState('');
     const [newNotes, setNewNotes] = useState('');
     const [newIsPrimary, setNewIsPrimary] = useState(false);
-    
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState(null);
     const { addToast } = useToast();
-
-    // To handle inline edits
     const [editNotesId, setEditNotesId] = useState(null);
     const [editNotesVal, setEditNotesVal] = useState('');
 
@@ -507,16 +823,12 @@ function DomainsCard({ domains: initialDomains, onRefresh }) {
         setSaving(true);
         setError(null);
         try {
-            await adminApi.post('/org/domains/', {
-                domain: newDomain,
-                is_primary: newIsPrimary,
-                notes: newNotes
-            });
-            addToast({ message: "Domain added successfully.", type: "success" });
+            await adminApi.post('/org/domains/', { domain: newDomain, is_primary: newIsPrimary, notes: newNotes });
+            addToast({ message: 'Domain added successfully.', type: 'success' });
             setNewDomain(''); setNewNotes(''); setNewIsPrimary(false);
             if (onRefresh) await onRefresh();
         } catch (err) {
-            setError(err.response?.data?.detail || "Failed to add domain.");
+            setError(err.response?.data?.detail || 'Failed to add domain.');
         } finally {
             setSaving(false);
         }
@@ -526,11 +838,11 @@ function DomainsCard({ domains: initialDomains, onRefresh }) {
         setError(null);
         try {
             await adminApi.patch(`/org/domains/${id}/`, payload);
-            addToast({ message: "Domain updated.", type: "success" });
+            addToast({ message: 'Domain updated.', type: 'success' });
             setEditNotesId(null);
             if (onRefresh) onRefresh();
         } catch (err) {
-            setError(err.response?.data?.detail || "Failed to update domain.");
+            setError(err.response?.data?.detail || 'Failed to update domain.');
         }
     };
 
@@ -548,25 +860,18 @@ function DomainsCard({ domains: initialDomains, onRefresh }) {
                     </div>
                 </div>
             </div>
-
             <div className={styles.tableWrapper}>
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>Domain</th>
-                            <th>Status / Primary</th>
-                            <th>Verification</th>
-                            <th>Notes</th>
-                            <th>Actions</th>
+                            <th>Domain</th><th>Status / Primary</th><th>Verification</th><th>Notes</th><th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {domains.map(d => (
                             <tr key={d.id || d.domain} className={d.is_primary ? styles.primaryRow : styles.tableRow}>
                                 <td><strong>{d.domain}</strong></td>
-                                <td>
-                                    {d.is_primary && <span className={`${styles.badge} ${styles.badgeTeal}`}>Primary</span>}
-                                </td>
+                                <td>{d.is_primary && <span className={`${styles.badge} ${styles.badgeTeal}`}>Primary</span>}</td>
                                 <td>
                                     {d.is_verified ? (
                                         <div>
@@ -578,15 +883,13 @@ function DomainsCard({ domains: initialDomains, onRefresh }) {
                                     )}
                                 </td>
                                 <td>
-                                    {editNotesId === d.id ? (
-                                        <input className={styles.input} value={editNotesVal} onChange={e => setEditNotesVal(e.target.value)} />
-                                    ) : (
-                                        <span>{d.notes || <span className={styles.helpText}>No notes</span>}</span>
-                                    )}
+                                    {editNotesId === d.id
+                                        ? <input className={styles.input} value={editNotesVal} onChange={e => setEditNotesVal(e.target.value)} />
+                                        : <span>{d.notes || <span className={styles.helpText}>No notes</span>}</span>}
                                 </td>
                                 <td>
                                     {editNotesId === d.id ? (
-                                        <div style={{display:'flex', gap:'8px'}}>
+                                        <div style={{ display: 'flex', gap: '8px' }}>
                                             <Button size="sm" onClick={() => handlePatchDomain(d.id, { notes: editNotesVal })}>Save</Button>
                                             <Button variant="ghost" size="sm" onClick={() => setEditNotesId(null)}>Cancel</Button>
                                         </div>
@@ -599,41 +902,24 @@ function DomainsCard({ domains: initialDomains, onRefresh }) {
                     </tbody>
                 </table>
             </div>
-
             <form className={styles.addDomainForm} onSubmit={handleAddDomain}>
-                <TextInput 
-                    id="new-domain" 
-                    label="Add New Domain" 
-                    placeholder="e.g. students.school.edu" 
-                    value={newDomain} 
-                    onChange={e => setNewDomain(e.target.value)} 
-                />
+                <TextInput id="new-domain" label="Add New Domain" placeholder="e.g. students.school.edu" value={newDomain} onChange={e => setNewDomain(e.target.value)} />
                 <div className={styles.toggleGroup}>
                     <Toggle id="new-prim" label="Set Primary" checked={newIsPrimary} onChange={setNewIsPrimary} />
                 </div>
-                <TextInput 
-                    id="new-notes" 
-                    label="Notes" 
-                    placeholder="Optional details" 
-                    value={newNotes} 
-                    onChange={e => setNewNotes(e.target.value)} 
-                />
-                <Button type="submit" variant="primary" disabled={!newDomain || saving}>
-                    <Plus size={16} /> Add 
-                </Button>
+                <TextInput id="new-notes" label="Notes" placeholder="Optional details" value={newNotes} onChange={e => setNewNotes(e.target.value)} />
+                <Button type="submit" variant="primary" disabled={!newDomain || saving}><Plus size={16} /> Add</Button>
             </form>
-            {error && <div style={{padding:'0 var(--space-4) var(--space-4)'}}><div className={styles.inlineError}><AlertTriangle size={16} /> {error}</div></div>}
+            {error && <div style={{ padding: '0 var(--space-4) var(--space-4)' }}><div className={styles.inlineError}><AlertTriangle size={16} /> {error}</div></div>}
         </div>
     );
 }
 
-// ── MAIN PAGE COMPONENT ──────────────────────────────────────────────────────
+// ── MAIN PAGE — card order: Profile → Legal → Owners → Domains ───────────────
 
 export default function OrgProfile() {
     const [loading, setLoading] = useState(true);
     const [pageError, setPageError] = useState(null);
-    
-    const [orgData, setOrgData] = useState(null);
     const [profileData, setProfileData] = useState(null);
     const [legalData, setLegalData] = useState(null);
     const [domainsData, setDomainsData] = useState([]);
@@ -642,29 +928,21 @@ export default function OrgProfile() {
         setLoading(true);
         setPageError(null);
         try {
-            // Fetch models in parallel. 
-            // If backend throws 404 for domains or legal during early dev, we catch individually.
-            const pOrg     = adminApi.get('/org/me/').catch(e => ({ data: {} })); 
-            const pProfile = adminApi.get('/org/profile/me/').catch(e => { throw e }); // Core Profile must exist
-            const pLegal   = adminApi.get('/org/legal/me/').catch(e => ({ data: {} })); // Might be missing
-            const pDomains = adminApi.get('/org/domains/').catch(e => ({ data: [] })); // Might be missing
-
-            const [resOrg, resProfile, resLegal, resDomains] = await Promise.all([pOrg, pProfile, pLegal, pDomains]);
-            
-            setOrgData(resOrg.data);
+            const pProfile = adminApi.get('/org/profile/me/').catch(e => { throw e; });
+            const pLegal = adminApi.get('/org/legal/me/').catch(() => ({ data: {} }));
+            const pDomains = adminApi.get('/org/domains/').catch(() => ({ data: [] }));
+            const [resProfile, resLegal, resDomains] = await Promise.all([pProfile, pLegal, pDomains]);
             setProfileData(resProfile.data);
             setLegalData(resLegal.data);
             setDomainsData(resDomains.data);
         } catch (err) {
-            setPageError(err.response?.data?.detail || "Failed to load organization data.");
+            setPageError(err.response?.data?.detail || 'Failed to load organization data.');
         } finally {
             setLoading(false);
         }
     }, []);
 
-    useEffect(() => {
-        fetchAllData();
-    }, [fetchAllData]);
+    useEffect(() => { fetchAllData(); }, [fetchAllData]);
 
     return (
         <div className={styles.page}>
@@ -692,7 +970,7 @@ export default function OrgProfile() {
             {!loading && pageError && (
                 <div className={styles.stateContainer}>
                     <AlertTriangle size={32} style={{ color: 'var(--color-danger)' }} />
-                    <h3 style={{color: 'var(--color-text-primary)'}}>Initialization Failed</h3>
+                    <h3 style={{ color: 'var(--color-text-primary)' }}>Initialization Failed</h3>
                     <div>{pageError}</div>
                     <Button onClick={fetchAllData} variant="primary">Retry Fetch</Button>
                 </div>
@@ -700,9 +978,10 @@ export default function OrgProfile() {
 
             {!loading && !pageError && profileData && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
-                    <OrganizationCard org={orgData} />
                     <OrganizationProfileCard profile={profileData} />
                     <OrganizationLegalCard legal={legalData} />
+                    {/* OwnersCard fetches its own data independently via /org/sys/owners/ */}
+                    <OwnersCard />
                     <DomainsCard domains={domainsData} onRefresh={fetchAllData} />
                 </div>
             )}
