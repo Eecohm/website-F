@@ -1,3 +1,18 @@
+import csImg from '../../../assets/Images/cs.png';
+import adcsIcon from '../../../assets/Icons/adcs-icon.svg';
+import program2Img from '../../../assets/Images/program_2.png';
+import adhmIcon from '../../../assets/Icons/adhm-icon.svg';
+import adhmImg from '../../../assets/Images/adhm.jpg';
+import dhmIcon from '../../../assets/Icons/dhm-icon.svg';
+import program3Img from '../../../assets/Images/program_3.png';
+import bsIcon from '../../../assets/Icons/bs-icon.svg';
+import hmImg from '../../../assets/Images/hmimgs.png';
+import hmIcon from '../../../assets/Icons/hm-icon.svg';
+import cssImg from '../../../assets/Images/css.png';
+import csIcon from '../../../assets/Icons/cs-icon.svg';
+import preschoolImg from '../../../assets/Images/preschool.png';
+import schoolIcon from '../../../assets/Icons/school-icon.svg';
+
 export const coursesData = [
   {
     name: '+2 with Advance Diploma in Computer Science',
@@ -11,8 +26,8 @@ export const coursesData = [
       'Career Oriented Approach which prepares students for higher education and IT careers.',
       'Includes networking, programming with different languages (C++, Python, SQL).'
     ],
-    photo: '/src/assets/Images/cs.png',
-    icon: '/src/assets/Icons/adcs-icon.svg'
+    photo: csImg,
+    icon: adcsIcon
   },
   {
     name: '+2 with Advance Diploma in Hotel Management',
@@ -24,8 +39,8 @@ export const coursesData = [
       'Job opportunities in Nepal and internationally.',
       'Industry relevant skills to excel in global hospitality industry.'
     ],
-    photo: '/src/assets/Images/program_2.png',
-    icon: '/src/assets/Icons/adhm-icon.svg'
+    photo: program2Img,
+    icon: adhmIcon
   },
   {
     name: 'Diploma in Hotel Management (DHM)',
@@ -37,8 +52,8 @@ export const coursesData = [
       'Experienced Faculty with real-world industry expertise.',
       'Opportunities for Certification and skill development workshops.'
     ],
-    photo: '/src/assets/Images/adhm.jpg',
-    icon: '/src/assets/Icons/dhm-icon.svg'
+    photo: adhmImg,
+    icon: dhmIcon
   },
   {
     name: '+2 with Business Studies',
@@ -50,8 +65,8 @@ export const coursesData = [
       'Marketing strategies cover digital marketing, branding, and consumer behavior analysis.',
       'Entrepreneurship encourages innovative thinking and business startup development.'
     ],
-    photo: '/src/assets/Images/program_3.png',
-    icon: '/src/assets/Icons/bs-icon.svg'
+    photo: program3Img,
+    icon: bsIcon
   },
   {
     name: '+2 with Hotel Management',
@@ -63,8 +78,8 @@ export const coursesData = [
       'Marketing strategies include promoting tourism and enhancing guest experience techniques.',
       'Entrepreneurship fosters skills to launch and operate successful hospitality ventures.'
     ],
-    photo: '/src/assets/Images/hmimgs.png',
-    icon: '/src/assets/Icons/hm-icon.svg'
+    photo: hmImg,
+    icon: hmIcon
   },
   {
     name: '+2 with Computer Science',
@@ -76,8 +91,8 @@ export const coursesData = [
       'Marketing strategies teach promoting software products and digital services effectively.',
       'Entrepreneurship develops skills to create innovative tech startups and solutions.'
     ],
-    photo: '/src/assets/Images/css.png',
-    icon: '/src/assets/Icons/cs-icon.svg'
+    photo: cssImg,
+    icon: csIcon
   },
   {
     name: 'Pre-School to Secondary',
@@ -89,7 +104,7 @@ export const coursesData = [
       'Academic foundation ensures strong proficiency in core subjects like math and science.',
       'Extracurriculars encourage participation in sports, arts, and leadership activities.'
     ],
-    photo: '/src/assets/Images/preschool.png',
-    icon: '/src/assets/Icons/school-icon.svg'
+    photo: preschoolImg,
+    icon: schoolIcon
   }
 ];
