@@ -363,4 +363,26 @@
     --error: var(--color-danger);
     --warning: var(--color-warning);
     --info: var(--color-secondary);
+    --info: var(--color-secondary);
+
+    /* Brand Colors (landing page) */
+    --brand-primary: #a50000;
+    --brand-dark: #500606;
+    --brand-hover: #8b0a0a;
+    --brand-accent-yellow: rgb(238, 255, 0);
+
+    /* Claymorphism & Premium UI Variables */
+    --clay-bg: rgba(255, 255, 255, 0.95);
+    --clay-shadow: 
+        inset 1px 1px 1px rgba(255, 255, 255, 0.8),
+        inset -1px -1px 2px rgba(0, 0, 0, 0.04),
+        4px 6px 16px rgba(0, 0, 0, 0.06);
+    --clay-shadow-hover: 
+        inset 1px 1px 2px rgba(255, 255, 255, 1),
+        inset -2px -2px 4px rgba(0, 0, 0, 0.06),
+        8px 12px 24px rgba(0, 0, 0, 0.12);
+    --clay-radius: var(--radius-2xl);
+    
+    --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }

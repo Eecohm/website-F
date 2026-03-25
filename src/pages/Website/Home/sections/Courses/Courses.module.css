@@ -1,0 +1,91 @@
+.coursesSection {
+  padding: 5rem 2rem;
+  background: linear-gradient(#fffbe6, #ffd580);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--brand-dark);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.controls {
+  display: flex;
+  gap: 1rem;
+}
+
+.scrollBtn {
+  background: var(--white);
+  color: var(--brand-primary);
+  border: 1px solid var(--border);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.scrollBtn:hover {
+  background: var(--brand-primary);
+  color: var(--white);
+  border-color: var(--brand-primary);
+}
+
+.scrollContainer {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  padding-bottom: 2rem; /* space for shadows */
+  padding-top: 1rem;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none; /* Chrome/Safari/Webkit */
+}
+
+.cardsTrack {
+  display: inline-flex;
+  gap: 3rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 768px) {
+  .coursesSection { 
+    padding: 4rem 0 3rem;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    margin-top: -30px;
+    position: relative;
+    box-shadow: 0 -10px 30px rgba(0,0,0,0.05);
+  }
+  .heading { font-size: 2rem; padding: 0 1rem; text-align: center; }
+  .cardsTrack { gap: 1rem; padding: 0 1rem; }
+  .scrollContainer {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1rem;
+    -webkit-overflow-scrolling: touch;
+    mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 2%, black 98%, transparent);
+  }
+}

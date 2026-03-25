@@ -1,0 +1,200 @@
+.heroSection {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--white);
+  text-align: center;
+}
+
+.background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.backgroundImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  animation: gentleDrift 30s ease-in-out infinite alternate;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(226, 190, 190, 0.5), rgba(156, 28, 28, 0.9));
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(2px);
+  border-radius: 30px;
+}
+
+.heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 8vh;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.subheading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 3vh;
+  font-weight: 600;
+  margin: 0;
+  color: var(--brand-accent-yellow);
+  letter-spacing: 4px;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0;
+  opacity: 0.95;
+}
+
+.ctaContainer {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.loginBtn {
+  background: transparent;
+  color: var(--brand-accent-yellow);
+  border: 2px solid var(--brand-accent-yellow);
+  padding: 0.8rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  text-decoration: none;
+}
+
+.loginBtn:hover {
+  transform: translateY(-3px) scale(1.03);
+  background: rgba(238, 255, 0, 0.1);
+  box-shadow: 0 10px 20px rgba(238, 255, 0, 0.15);
+}
+
+.signupBtn {
+  background: var(--white);
+  color: var(--brand-dark);
+  border: 2px solid var(--white);
+  padding: 0.8rem 2.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  text-decoration: none;
+  box-shadow: var(--clay-shadow);
+}
+
+.signupBtn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: var(--clay-shadow-hover);
+}
+
+/* Animations using global anim vars or simple CSS keyframes if preferred */
+.animateUp {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.delay1 { animation-delay: 0.2s; }
+.delay2 { animation-delay: 0.4s; }
+.delay3 { animation-delay: 0.6s; }
+.delay4 { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .heroSection {
+    align-items: flex-end;
+    padding-bottom: 12vh;
+  }
+  .content {
+    background: transparent;
+    backdrop-filter: none;
+    padding: 1rem 1.5rem;
+    border-radius: 0;
+    align-items: flex-start;
+    text-align: left;
+    width: 100%;
+  }
+  .heading {
+    font-size: 5.5vh;
+    line-height: var(--leading-tight);
+    text-shadow: 0 4px 20px rgba(0,0,0,0.8);
+  }
+  .subheading {
+    font-size: 2.2vh;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    margin-bottom: 0.5rem;
+  }
+  .description {
+    font-size: 1.05rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.9);
+    opacity: 0.95;
+    max-width: 90%;
+  }
+  .ctaContainer {
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 2rem;
+    gap: 1rem;
+    animation: floatMobile 6s ease-in-out infinite;
+  }
+  .loginBtn, .signupBtn {
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+  .loginBtn {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+  }
+}
+
+@media (max-width: 480px) {
+  .heroSection { padding-bottom: 10vh; }
+  .heading { font-size: 4.5vh; }
+  .subheading { font-size: 1.8vh; }
+  .description { font-size: 0.95rem; }
+}

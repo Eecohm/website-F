@@ -1,0 +1,13 @@
+.footer {
+  background-color: var(--brand-dark);
+  color: var(--white);
+  padding: 2rem;
+  text-align: center;
+  font-family: var(--font-body);
+}
+
+.copyright {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin: 0;
+}
