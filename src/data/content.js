@@ -397,7 +397,7 @@ export const facilities = [
     id: 5,
     name: "Agro Farming Learning Center",
     description: "Introduces students to sustainable agriculture and modern farming.",
-    image: "https://images.unsplash.com/photo-1530836369250-ef71a3f5e481?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800&q=80",
     icon: "Sprout",
   },
   {
@@ -425,7 +425,7 @@ export const facilities = [
     id: 9,
     name: "Science Laboratory",
     description: "Hands-on experience in physics, chemistry, and biology.",
-    image: "https://images.unsplash.com/photo-1581093458791-9f3c3900df4b?w=800&q=80",
+    image: "https://images.unsplash.com/photo-1574682718105-0e12d4fbcfd1?w=800&q=80",
     icon: "Microscope",
   },
   {
