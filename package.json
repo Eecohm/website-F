@@ -25,6 +25,7 @@
     "react-fast-marquee": "^1.6.5",
     "react-helmet-async": "^2.0.5",
     "react-intersection-observer": "^9.15.1",
+    "react-markdown": "^10.1.0",
     "react-parallax-tilt": "^1.7.277",
     "react-router-dom": "^6.30.0",
     "three": "^0.186.0"

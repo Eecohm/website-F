@@ -18,6 +18,7 @@ const staticRoutes = [
   { path: '/why-eecohm',     changefreq: 'weekly',  priority: '1.0' },
   { path: '/about',           changefreq: 'monthly', priority: '0.8' },
   { path: '/programs',        changefreq: 'monthly', priority: '0.9' },
+  { path: '/blog',            changefreq: 'weekly',  priority: '0.8' },
   { path: '/credit-transfer', changefreq: 'weekly',  priority: '0.9' },
   { path: '/facilities',      changefreq: 'monthly', priority: '0.7' },
   { path: '/contact',         changefreq: 'monthly', priority: '0.7' },
@@ -40,7 +41,21 @@ const programRoutes = programSlugs.map((slug) => ({
   priority: '0.8',
 }));
 
-const allRoutes = [...staticRoutes, ...programRoutes];
+// Dynamic blog routes
+const blogSlugs = [
+  'what-is-dcit',
+  'understanding-lcci-and-qualifications-scotland',
+  'what-is-credit-transfer',
+  'why-hospitality-education-must-go-beyond-the-classroom'
+];
+
+const blogRoutes = blogSlugs.map((slug) => ({
+  path: `/blog/${slug}`,
+  changefreq: 'monthly',
+  priority: '0.7',
+}));
+
+const allRoutes = [...staticRoutes, ...programRoutes, ...blogRoutes];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

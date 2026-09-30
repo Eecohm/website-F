@@ -1,0 +1,132 @@
+.main {
+  background: var(--color-surface, #f8f7f5);
+  min-height: 100vh;
+  padding-bottom: 5rem;
+}
+
+.headerHero {
+  position: relative;
+  width: 100%;
+  padding: calc(var(--nav-height) + 6rem) 0 6rem;
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(13, 13, 26, 0.95) 0%, rgba(26, 5, 51, 0.7) 100%);
+  z-index: 1;
+}
+
+.headerContent {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  transition: color 0.2s, transform 0.2s;
+}
+.backBtn:hover {
+  color: #fff;
+  transform: translateX(-4px);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.badge {
+  background: #863bff;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.8);
+}
+
+.title {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.contentSection {
+  position: relative;
+  z-index: 3;
+  margin-top: -3rem;
+}
+
+.contentContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  border: 1px solid var(--color-border, #e5e7eb);
+}
+
+.markdownContent {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: var(--color-slate, #1a1a2e);
+}
+
+.markdownContent h2 {
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 2.5rem 0 1rem;
+  color: var(--color-slate, #1a1a2e);
+}
+
+.markdownContent p {
+  margin-bottom: 1.5rem;
+  color: var(--color-muted, #4b5563);
+}
+
+.markdownContent ul {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.markdownContent li {
+  margin-bottom: 0.5rem;
+  color: var(--color-muted, #4b5563);
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    padding: 2rem 1.5rem;
+  }
+}

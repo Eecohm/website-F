@@ -13,7 +13,9 @@ const ProgramDetail = lazy(() => import('./pages/ProgramDetail/ProgramDetail'));
 const Facilities   = lazy(() => import('./pages/Facilities/Facilities'));
 const Contact      = lazy(() => import('./pages/Contact/Contact'));
 const CreditTransfer = lazy(() => import('./pages/CreditTransfer/CreditTransfer'));
-const WhyEecohm   = lazy(() => import('./pages/WhyEecohm/WhyEecohm'));
+const WhyEecohm    = lazy(() => import('./pages/WhyEecohm/WhyEecohm'));
+const Blog         = lazy(() => import('./pages/Blog/Blog'));
+const BlogPost     = lazy(() => import('./pages/Blog/BlogPost'));
 const NotFound     = lazy(() => import('./pages/NotFound/NotFound'));
 
 // Page transition variants
@@ -103,6 +105,8 @@ export default function App() {
               <Route path="/facilities"          element={<Facilities />} />
               <Route path="/credit-transfer"     element={<CreditTransfer />} />
               <Route path="/why-eecohm"          element={<WhyEecohm />} />
+              <Route path="/blog"                element={<Blog />} />
+              <Route path="/blog/:slug"          element={<BlogPost />} />
               <Route path="/contact"             element={<Contact />} />
               <Route path="*"                    element={<NotFound />} />
             </Routes>

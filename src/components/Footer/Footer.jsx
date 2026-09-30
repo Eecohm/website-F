@@ -9,6 +9,7 @@ const quickLinks = [
   { to: '/about', label: 'About Us' },
   { to: '/programs', label: 'Programs' },
   { to: '/why-eecohm', label: 'Why EECOHM' },
+  { to: '/blog', label: 'Blog' },
   { to: '/credit-transfer', label: 'Credit Transfer' },
   { to: '/facilities', label: 'Facilities' },
   { to: '/contact', label: 'Contact' },
