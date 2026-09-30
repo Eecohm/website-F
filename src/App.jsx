@@ -12,6 +12,7 @@ const Programs     = lazy(() => import('./pages/Programs/Programs'));
 const ProgramDetail = lazy(() => import('./pages/ProgramDetail/ProgramDetail'));
 const Facilities   = lazy(() => import('./pages/Facilities/Facilities'));
 const Contact      = lazy(() => import('./pages/Contact/Contact'));
+const CreditTransfer = lazy(() => import('./pages/CreditTransfer/CreditTransfer'));
 const NotFound     = lazy(() => import('./pages/NotFound/NotFound'));
 
 // Page transition variants
@@ -99,6 +100,7 @@ export default function App() {
               <Route path="/programs"            element={<Programs />} />
               <Route path="/programs/:slug"      element={<ProgramDetail />} />
               <Route path="/facilities"          element={<Facilities />} />
+              <Route path="/credit-transfer"     element={<CreditTransfer />} />
               <Route path="/contact"             element={<Contact />} />
               <Route path="*"                    element={<NotFound />} />
             </Routes>

@@ -213,6 +213,79 @@
 }
 .applyBtn:hover { background: var(--color-primary-dark); }
 
+/* ── Detailed Curriculum Tables ────────────────────────────────────────── */
+.detailedSubjectsWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.levelBlock {
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.levelTitle {
+  font-family: var(--font-heading);
+  background: var(--color-surface);
+  padding: 1rem 1.5rem;
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-slate);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tableResponsive {
+  overflow-x: auto;
+}
+
+.subjectTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.subjectTable th,
+.subjectTable td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.subjectTable th {
+  font-weight: 600;
+  color: var(--color-muted);
+  background: rgba(0,0,0,0.015);
+  white-space: nowrap;
+}
+
+.subjectTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.subjectTable tbody tr:hover {
+  background: rgba(134,59,255,0.02);
+}
+
+.totalCol {
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+.tableFooter {
+  background: var(--color-surface);
+}
+
+.tableFooter td {
+  color: var(--color-slate);
+}
+
 /* ── Not found ─────────────────────────────────────────────────────────────── */
 .notFound {
   padding-top: calc(var(--nav-height) + var(--space-24));
@@ -226,3 +299,194 @@
   color: var(--color-slate);
   margin-bottom: var(--space-4);
 }
+
+/* ── SCQF Badge ─────────────────────────────────────── */
+.scqfBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: linear-gradient(135deg, #0064a0 0%, #004c78 100%);
+  border-radius: 12px;
+  padding: 0.75rem 1.5rem;
+  margin: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0,100,160,0.25);
+}
+
+.scqfItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1.2rem;
+}
+
+.scqfValue {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.scqfLabel {
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin-top: 3px;
+}
+
+.scqfDivider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255,255,255,0.2);
+}
+
+/* ── Duration Grid ─────────────────────────────────── */
+.durationGrid {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+  padding: 1rem 1.25rem;
+  background: var(--color-surface-alt, #f4f2f0);
+  border-radius: 12px;
+}
+
+.durationItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.durationVal {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--color-slate, #1a1a2e);
+}
+
+.durationLbl {
+  font-size: 0.7rem;
+  color: var(--color-muted, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.durationPlus {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-accent, #E8A020);
+}
+
+/* ── Subject Pills ─────────────────────────────────── */
+.subjectsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.subjectPill {
+  border: 1.5px solid;
+  border-radius: 10px;
+  padding: 0.6rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  cursor: default;
+}
+
+.subjectType {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.subjectName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-slate, #1a1a2e);
+  line-height: 1.35;
+}
+
+.subjectHours {
+  font-size: 0.7rem;
+  color: var(--color-muted, #6b7280);
+  margin-top: 2px;
+}
+
+.subjectsNote {
+  font-size: 0.75rem;
+  color: var(--color-muted, #6b7280);
+  margin-top: 0.75rem;
+  font-style: italic;
+}
+
+/* ── Credit Transfer Table ─────────────────────────── */
+.ctTable {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  margin-top: 0.75rem;
+}
+
+.ctTableHeader {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 0.6rem 1rem;
+  background: var(--color-slate, #1a1a2e);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  gap: 0.5rem;
+}
+
+.ctTableRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  color: var(--color-slate, #1a1a2e);
+  gap: 0.5rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+  transition: background 0.15s;
+}
+
+.ctTableRow:hover { background: var(--color-surface-alt, #f8f7f5); }
+
+.ctEntry {
+  font-weight: 700;
+  color: var(--color-primary, #863bff);
+}
+
+.ctLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary, #863bff);
+  margin-top: 0.75rem;
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.ctLink:hover { gap: 0.6rem; }
+
+/* ── Affiliation link ──────────────────────────────── */
+.affiliationLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--color-primary, #863bff);
+  text-decoration: none;
+  margin-top: 3px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.affiliationLink:hover { opacity: 1; }
+

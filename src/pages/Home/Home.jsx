@@ -2,7 +2,7 @@ import { Suspense, lazy } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Helmet } from 'react-helmet-async';
-import { ArrowRight, GraduationCap, TrendingUp, Lightbulb } from 'lucide-react';
+import { ArrowRight, GraduationCap, TrendingUp, Lightbulb, CheckCircle } from 'lucide-react';
 import Hero from '../../components/Hero/Hero';
 import StatsSection from '../../components/StatsSection/StatsSection';
 import ProgramCard from '../../components/ProgramCard/ProgramCard';
@@ -14,7 +14,6 @@ import { programs, philosophy, seo } from '../../data/content';
 import styles from './Home.module.css';
 
 const FacilitiesGrid = lazy(() => import('../../components/FacilitiesGrid/FacilitiesGrid'));
-const ProgramShowcase3D = lazy(() => import('../../components/ProgramShowcase3D/ProgramShowcase3D'));
 import { facilities } from '../../data/content';
 
 const iconMap = { GraduationCap, TrendingUp, Lightbulb };
@@ -79,13 +78,54 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Interactive 3D Program Showcase */}
-        <Suspense fallback={<div style={{ minHeight: 560 }} />}>
-          <ProgramShowcase3D />
-        </Suspense>
-
-        {/* 5. Stats */}
+        {/* 4. Stats */}
         <StatsSection />
+
+        {/* 4.5. Credit Transfer Promo */}
+        <section className={styles.ctPromo} aria-labelledby="ct-promo-heading">
+          <div className="container">
+            <div className={styles.ctPromoGrid}>
+              <SectionReveal direction="left">
+                <span className={styles.ctPromoEyebrow}>Global Pathways</span>
+                <h2 id="ct-promo-heading" className={styles.ctPromoHeading}>
+                  Take Your EECOHM Degree Worldwide
+                </h2>
+                <p className={styles.ctPromoText}>
+                  Our Advanced Diploma in Hospitality Management (ADHM) is credit-rated at SCQF Level 7. 
+                  This unlocks advanced entry directly into Year 2 of bachelor's degree programs at prestigious 
+                  universities across the UK, Switzerland, Australia, and Malaysia.
+                </p>
+                <ul className={styles.ctPromoList}>
+                  <li className={styles.ctPromoItem}>
+                    <CheckCircle size={20} className={styles.ctPromoIcon} />
+                    Save 1 year of tuition and living costs abroad
+                  </li>
+                  <li className={styles.ctPromoItem}>
+                    <CheckCircle size={20} className={styles.ctPromoIcon} />
+                    Globally recognised SCQF/EQF qualifications
+                  </li>
+                  <li className={styles.ctPromoItem}>
+                    <CheckCircle size={20} className={styles.ctPromoIcon} />
+                    Dual certification and internships included
+                  </li>
+                </ul>
+                <Link to="/credit-transfer" className={styles.ctPromoBtn}>
+                  Explore Credit Transfer <ArrowRight size={17} />
+                </Link>
+              </SectionReveal>
+              <SectionReveal direction="right">
+                <div className={styles.ctPromoImageWrap}>
+                  <img 
+                    src="/images/Images/Home.webp" 
+                    alt="International education concept" 
+                    className={styles.ctPromoImage}
+                    loading="lazy" 
+                  />
+                </div>
+              </SectionReveal>
+            </div>
+          </div>
+        </section>
 
         {/* 5. About strip */}
         <section className={styles.aboutStrip} aria-labelledby="about-heading">

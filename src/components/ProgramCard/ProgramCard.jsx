@@ -75,18 +75,9 @@ function CardInner({ program }) {
           <Clock size={13} />
           <span>{program.duration} Program</span>
         </div>
-        <p className={styles.desc}>{program.description}</p>
-
-        {program.features && program.features.length > 0 && (
-          <ul className={styles.features} role="list">
-            {program.features.slice(0, 3).map((f) => (
-              <li key={f} className={styles.feature}>
-                <span className={styles.featureDot} aria-hidden="true" />
-                {f}
-              </li>
-            ))}
-          </ul>
-        )}
+        <p className={styles.desc}>
+          {program.description.split('.')[0]}.
+        </p>
 
         <Link
           to={`/programs/${program.slug}`}
