@@ -48,6 +48,7 @@ export const programs = [
     ],
     color: "#0D5C63",
     category: "technology",
+    glb: "/glb/eecohm_laptop.glb",
   },
   {
     slug: "advanced-diploma-hotel-management",
@@ -67,6 +68,7 @@ export const programs = [
     ],
     color: "#8B4513",
     category: "hospitality",
+    glb: "/glb/eecohm_chef_hat.glb",
   },
   {
     slug: "diploma-hotel-management",
@@ -86,6 +88,7 @@ export const programs = [
     ],
     color: "#7B5E3A",
     category: "hospitality",
+    glb: "/glb/eecohm_chef_hat.glb",
   },
   {
     slug: "business-studies",
@@ -105,6 +108,7 @@ export const programs = [
     ],
     color: "#2E5902",
     category: "business",
+    glb: "/glb/eecohm_book.glb",
   },
   {
     slug: "plus-two-hotel-management",
@@ -124,6 +128,7 @@ export const programs = [
     ],
     color: "#6B4226",
     category: "hospitality",
+    glb: "/glb/eecohm_chef_hat.glb",
   },
   {
     slug: "plus-two-computer-science",
@@ -143,6 +148,7 @@ export const programs = [
     ],
     color: "#1A5276",
     category: "technology",
+    glb: "/glb/eecohm_laptop.glb",
   },
   {
     slug: "pre-school-to-secondary",
@@ -162,6 +168,7 @@ export const programs = [
     ],
     color: "#6C3483",
     category: "school",
+    glb: "/glb/eecohm_diploma_scroll.glb",
   },
 ];
 

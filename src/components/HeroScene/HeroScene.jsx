@@ -14,7 +14,7 @@
 
 import { useRef, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Float, useGLTF } from '@react-three/drei';
 import styles from './HeroScene.module.css';
 
 // ── Mouse tracker shared across scene ───────────────────────────────────────
@@ -61,7 +61,6 @@ function Shape({ geometry, position, color, floatSpeed, floatIntensity, rotInten
   );
 }
 
-// ── The scene ───────────────────────────────────────────────────────────────
 function Scene() {
   return (
     <>

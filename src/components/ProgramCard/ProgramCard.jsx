@@ -1,14 +1,6 @@
 /**
- * ProgramCard — with physics-driven 3D tilt (desktop) or plain entrance (touch/reduced).
- *
- * The tilt uses Framer Motion useMotionValue + useSpring instead of react-parallax-tilt.
- * Spring: stiffness=150, damping=15, mass=0.5 — natural overshoot on mouse leave.
- *
- * A radial-gradient "glare" layer tracks the mouse to simulate a reflective surface.
- * The card body sits on translateZ(40px) so it visibly separates from the card
- * background when tilted — this is the real depth cue.
- *
- * Touch / reduced-motion: no tilt, no glare — only the whileInView entrance fade.
+ * ProgramCard — physics-driven 3D tilt (desktop) or plain entrance (touch/reduced).
+ * CLEAN VERSION — no 3D Canvas, uses the program's SVG icon instead.
  */
 
 import { useRef, useCallback } from 'react';
@@ -57,8 +49,7 @@ function PlainCard({ program, index, variant }) {
 }
 
 // ── Shared card inner content ────────────────────────────────────────────────
-function CardInner({ program, elevated = false }) {
-  const bodyStyle = elevated ? { transform: 'translateZ(40px)' } : {};
+function CardInner({ program }) {
   return (
     <>
       <div className={styles.imageWrap}>
@@ -78,7 +69,7 @@ function CardInner({ program, elevated = false }) {
         )}
       </div>
 
-      <div className={styles.body} style={bodyStyle}>
+      <div className={styles.body}>
         <h3 className={styles.name}>{program.name}</h3>
         <div className={styles.duration}>
           <Clock size={13} />
@@ -124,26 +115,23 @@ function TiltCard({ program, index, variant }) {
   const handleMouseMove = useCallback((e) => {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const relX = (e.clientX - rect.left) / rect.width;  // 0 → 1
+    const relX = (e.clientX - rect.left) / rect.width;
     const relY = (e.clientY - rect.top) / rect.height;
 
-    rawX.set((relY - 0.5) * -MAX_TILT * 2); // top → positive rotateX
-    rawY.set((relX - 0.5) * MAX_TILT * 2);  // right → positive rotateY
+    rawX.set((relY - 0.5) * -MAX_TILT * 2);
+    rawY.set((relX - 0.5) * MAX_TILT * 2);
 
-    // Glare follows mouse as percentage for the radial-gradient position
     glareX.set(relX * 100);
     glareY.set(relY * 100);
   }, [rawX, rawY, glareX, glareY]);
 
   const handleMouseLeave = useCallback(() => {
-    // Springs naturally overshoot to 0 — correct behaviour
     rawX.set(0);
     rawY.set(0);
     glareX.set(50);
     glareY.set(50);
   }, [rawX, rawY, glareX, glareY]);
 
-  // Convert glare motion values to CSS string for the radial-gradient
   const glareStyle = useTransform(
     [glareX, glareY],
     ([gx, gy]) =>
@@ -151,7 +139,6 @@ function TiltCard({ program, index, variant }) {
   );
 
   return (
-    // Outer wrapper provides the CSS perspective context
     <div className={styles.tiltOuter}>
       <motion.article
         ref={cardRef}
@@ -171,15 +158,13 @@ function TiltCard({ program, index, variant }) {
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Glare layer — sits on top, tracks cursor, sells reflective surface */}
+        {/* Glare layer */}
         <motion.div
           className={styles.glare}
           style={{ background: glareStyle }}
           aria-hidden="true"
         />
-
-        {/* Card content elevated on Z axis — visibly pops on tilt */}
-        <CardInner program={program} elevated />
+        <CardInner program={program} />
       </motion.article>
     </div>
   );

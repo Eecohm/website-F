@@ -14,6 +14,7 @@ import { programs, philosophy, seo } from '../../data/content';
 import styles from './Home.module.css';
 
 const FacilitiesGrid = lazy(() => import('../../components/FacilitiesGrid/FacilitiesGrid'));
+const ProgramShowcase3D = lazy(() => import('../../components/ProgramShowcase3D/ProgramShowcase3D'));
 import { facilities } from '../../data/content';
 
 const iconMap = { GraduationCap, TrendingUp, Lightbulb };
@@ -78,7 +79,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 4. Stats */}
+        {/* 4. Interactive 3D Program Showcase */}
+        <Suspense fallback={<div style={{ minHeight: 560 }} />}>
+          <ProgramShowcase3D />
+        </Suspense>
+
+        {/* 5. Stats */}
         <StatsSection />
 
         {/* 5. About strip */}

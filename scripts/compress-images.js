@@ -33,7 +33,14 @@ function ensureDir(dir) {
 
 async function processImage(srcPath, outPath, config) {
   const ext = extname(srcPath).toLowerCase();
-  if (!IMAGE_EXTS.has(extname(srcPath))) return;
+  if (ext === '.svg') {
+    const { copyFileSync } = await import('fs');
+    copyFileSync(srcPath, outPath);
+    console.log(`  ✓ ${basename(srcPath)} copied (SVG)`);
+    return;
+  }
+
+  if (!IMAGE_EXTS.has(ext)) return;
 
   // Output always as WebP
   const outWebP = outPath.replace(/\.[^.]+$/, '.webp');
