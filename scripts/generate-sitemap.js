@@ -14,11 +14,13 @@ const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
 
 // All static routes
 const staticRoutes = [
-  { path: '/',           changefreq: 'weekly',  priority: '1.0' },
-  { path: '/about',      changefreq: 'monthly', priority: '0.8' },
-  { path: '/programs',   changefreq: 'monthly', priority: '0.9' },
-  { path: '/facilities', changefreq: 'monthly', priority: '0.7' },
-  { path: '/contact',    changefreq: 'monthly', priority: '0.7' },
+  { path: '/',                changefreq: 'weekly',  priority: '1.0' },
+  { path: '/why-eecohm',     changefreq: 'weekly',  priority: '1.0' },
+  { path: '/about',           changefreq: 'monthly', priority: '0.8' },
+  { path: '/programs',        changefreq: 'monthly', priority: '0.9' },
+  { path: '/credit-transfer', changefreq: 'weekly',  priority: '0.9' },
+  { path: '/facilities',      changefreq: 'monthly', priority: '0.7' },
+  { path: '/contact',         changefreq: 'monthly', priority: '0.7' },
 ];
 
 // Dynamic program routes — must match slugs in src/data/content.js

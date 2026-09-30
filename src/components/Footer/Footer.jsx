@@ -8,6 +8,8 @@ const quickLinks = [
   { to: '/', label: 'Home' },
   { to: '/about', label: 'About Us' },
   { to: '/programs', label: 'Programs' },
+  { to: '/why-eecohm', label: 'Why EECOHM' },
+  { to: '/credit-transfer', label: 'Credit Transfer' },
   { to: '/facilities', label: 'Facilities' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -95,7 +97,7 @@ export default function Footer() {
             © {new Date().getFullYear()} <span className={styles.accent}>EECOHM School of Excellence</span>. All rights reserved.
           </p>
           <p className={styles.affiliation}>
-            Affiliated with NEB · Birtamod-4, Jhapa, Nepal
+            Affiliated with NEB & Qualifications Scotland · Birtamod-4, Jhapa, Nepal
           </p>
         </div>
       </div>
