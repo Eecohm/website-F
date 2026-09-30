@@ -568,28 +568,28 @@ export const philosophy = [
 
 export const seo = {
   "/": {
-    title: "EECOHM School of Excellence — Jhapa, Nepal",
+    title: "EECOHM School of Excellence — Best College in Birtamode, Jhapa",
     description:
-      "Leading academic institution in Jhapa offering Computer Science, Hotel Management & Business programs since 2015. NEB-affiliated, dual certifications available.",
+      "EECOHM School of Excellence is widely recognized as the best college in Birtamode and the best college in Jhapa. We are the best college for hospitality in Birtamod, offering NEB-affiliated Computer Science, Hotel Management, and Business programs with dual international certifications.",
   },
   "/about": {
-    title: "About EECOHM — Our Story & Team | EECOHM School of Excellence",
+    title: "About EECOHM — Best College in Jhapa | Our Story & Team",
     description:
-      "Discover how EECOHM evolved from a single hospitality program to a full School of Excellence in Jhapa, Nepal, in just 10 years.",
+      "Discover how EECOHM evolved from a single hospitality program into the best college in Jhapa, Nepal. Learn about our world-class faculty and campus in Birtamode.",
   },
   "/programs": {
-    title: "Programs & Courses — EECOHM School of Excellence",
+    title: "Programs & Courses — Best College for Hospitality in Birtamod",
     description:
-      "Explore NEB-affiliated programs in Computer Science, Hotel Management, Business Studies, and Pre-School to Secondary education in Jhapa, Nepal.",
+      "Explore NEB-affiliated programs at the best college in Birtamode. We offer Advanced Diplomas in Hospitality Management, Computer Science, and Business Studies.",
   },
   "/facilities": {
-    title: "World-Class Facilities — EECOHM School of Excellence",
+    title: "World-Class Facilities — EECOHM, Best College in Birtamode",
     description:
-      "AI lab, STEM center, culinary kitchen, auditorium and 12 more world-class facilities at EECOHM School of Excellence, Birtamod, Jhapa.",
+      "Experience our AI lab, STEM center, culinary kitchen, and 12 more world-class facilities that make EECOHM the best college in Jhapa.",
   },
   "/contact": {
-    title: "Contact EECOHM — Birtamod, Jhapa | EECOHM School of Excellence",
+    title: "Contact EECOHM — Birtamod, Jhapa | Admissions Open",
     description:
-      "Reach EECOHM School of Excellence: +977-23-536392, Birtamod-4, Jhapa, Koshi Province, Nepal. Rolling admissions open.",
+      "Reach EECOHM School of Excellence: +977-23-536392, Birtamod-4, Jhapa. Join the best college in Birtamode. Rolling admissions open.",
   },
 };

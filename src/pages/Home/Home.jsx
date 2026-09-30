@@ -152,10 +152,9 @@ export default function Home() {
                   </h2>
                   <p className={styles.aboutText}>
                     What began as a single Hotel Management program in Birtamod, Jhapa
-                    in 2015 has grown into EECOHM School of Excellence — a comprehensive
-                    institution now offering programs from Pre-School to Advanced Diplomas,
-                    with students placed in top hotels, IT firms, and businesses across
-                    Nepal and abroad.
+                    in 2015 has grown into EECOHM School of Excellence. Today, we are proud to be recognized by many as the <strong>best college in Birtamode</strong> and the <strong>best college in Jhapa</strong>. 
+                    Whether you are seeking the <strong>best college for hospitality in Birtamod</strong> or top-tier IT and Business programs, EECOHM provides comprehensive 
+                    education from Pre-School to Advanced Diplomas, with students placed in top hotels, IT firms, and businesses globally.
                   </p>
                 </SectionReveal>
 
