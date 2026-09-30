@@ -172,14 +172,13 @@ export const programs = [
     eqfLevel: null,
     durationBreakdown: { training: "2 years", internship: "3 months" },
     subjects: [
-      // NEB Compulsory
+      // NEB +2 Subjects
       { name: "English", hours: null, type: "compulsory" },
       { name: "Nepali", hours: null, type: "compulsory" },
-      { name: "Mathematics", hours: null, type: "compulsory" },
-      // NEB Electives
-      { name: "Computer Science (Theory & Practical)", hours: null, type: "elective" },
-      { name: "Physics", hours: null, type: "elective" },
-      { name: "Chemistry / Economics", hours: null, type: "elective" },
+      { name: "Economics", hours: null, type: "compulsory" },
+      { name: "Accountancy", hours: null, type: "compulsory" },
+      { name: "Computer Science", hours: null, type: "compulsory" },
+      { name: "Mathematics / Social Studies", hours: null, type: "elective" },
       // ADCS Subjects
       { name: "Foundation of Software Development", hours: null, type: "diploma" },
       { name: "Foundation of Database Design", hours: null, type: "diploma" },
