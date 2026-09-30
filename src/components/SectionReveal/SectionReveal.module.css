@@ -1,0 +1,9 @@
+.wrap {
+  overflow: hidden;
+}
+
+/* Used as the motion wrapper around images for clip-path/scale reveals */
+.imageReveal {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}

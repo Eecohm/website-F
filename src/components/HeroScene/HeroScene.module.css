@@ -1,0 +1,14 @@
+/* ── HeroScene canvas container ─────────────────────────────────────────────
+   Pre-sizes the canvas area BEFORE Three.js renders to prevent CLS.
+   Position:absolute so it sits behind the hero HTML content layer.         */
+
+.container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 3D is decorative — let clicks pass through to content */
+  z-index: 1;
+  filter: blur(8px); /* Soften 3D shapes into ambient light suggestions */
+  opacity: 0.85; /* Final softening of the entire scene */
+}

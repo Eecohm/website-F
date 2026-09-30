@@ -1,0 +1,51 @@
+.strip {
+  background: var(--color-white);
+  border-top: 1px solid var(--color-surface-alt);
+  border-bottom: 1px solid var(--color-surface-alt);
+  padding-block: var(--space-8);
+  overflow: hidden;
+}
+
+.label {
+  text-align: center;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: var(--space-6);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  height: 60px;
+  margin-inline: var(--space-8);
+  opacity: 0.8; /* Slightly higher base opacity since we don't have grayscale anymore */
+  transition: opacity var(--transition-base);
+}
+
+.item:hover {
+  opacity: 1;
+}
+
+.partnerName {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-slate);
+  white-space: nowrap;
+}
+
+.item:hover {
+  opacity: 1;
+  filter: grayscale(0);
+}
+
+.img {
+  max-height: 52px;
+  max-width: 120px;
+  width: auto;
+  object-fit: contain;
+}

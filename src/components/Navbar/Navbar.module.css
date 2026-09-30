@@ -1,0 +1,197 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  transition: background-color var(--transition-slow), box-shadow var(--transition-slow);
+}
+
+.navScrolled {
+  background-color: rgba(248, 246, 241, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
+}
+
+.navTransparent {
+  background-color: transparent;
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--container-pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.logoImg {
+  height: 48px;
+  width: auto;
+  object-fit: contain;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoName {
+  font-family: var(--font-heading);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+.logoSub {
+  font-size: var(--text-xs);
+  color: var(--color-muted);
+  line-height: 1.2;
+}
+
+/* Desktop nav links */
+.desktopLinks {
+  display: none;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+@media (min-width: 900px) {
+  .desktopLinks { display: flex; }
+}
+
+.navLink {
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-slate);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-base), background-color var(--transition-base);
+  position: relative;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 2px;
+  left: var(--space-3);
+  right: var(--space-3);
+  height: 2px;
+  background: var(--color-accent);
+  border-radius: var(--radius-pill);
+  transform: scaleX(0);
+  transition: transform var(--transition-base);
+}
+
+.navLink:hover { color: var(--color-primary); }
+.navLink:hover::after { transform: scaleX(1); }
+
+.navLinkActive {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.navLinkActive::after { transform: scaleX(1); }
+
+.ctaBtn {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-primary);
+  padding: var(--space-2) var(--space-6);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-base), box-shadow var(--transition-base);
+  white-space: nowrap;
+}
+
+.ctaBtn:hover {
+  background: var(--color-primary-dark);
+  box-shadow: var(--shadow-teal);
+}
+
+/* Mobile hamburger */
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  gap: 5px;
+  padding: var(--space-2);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--color-slate);
+}
+
+@media (min-width: 900px) { .hamburger { display: none; } }
+
+.bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+  transform-origin: center;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+/* Mobile menu overlay */
+.mobileMenu {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6) var(--container-pad);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  z-index: 999;
+  border-top: 2px solid var(--color-surface-alt);
+}
+
+.mobileLink {
+  font-size: var(--text-md);
+  font-weight: 500;
+  color: var(--color-slate);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.mobileLink:hover { background: var(--color-surface-alt); color: var(--color-primary); }
+
+.mobileLinkActive {
+  color: var(--color-primary);
+  background: rgba(120, 0, 1, 0.07);
+  font-weight: 600;
+}
+
+.mobileCta {
+  margin-top: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-primary);
+  color: var(--color-white);
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: var(--text-md);
+  text-align: center;
+}

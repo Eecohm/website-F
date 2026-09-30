@@ -1,0 +1,6 @@
+/* ── MagneticButton wrapper ─────────────────────────────────────────────────
+   The wrapper must be inline so it doesn't disrupt button layout.           */
+.magnetic {
+  display: inline-flex;
+  position: relative;
+}
